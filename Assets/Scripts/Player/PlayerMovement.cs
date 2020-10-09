@@ -47,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float GravityMultiplier = 100;
 
+    private bool playerCanMove_ = true;
+
     void Awake()
     {
         forward = Camera.main.transform.forward;
@@ -86,65 +88,78 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        newMovementInput = playerInput.movementInput;
-
-        if (newMovementInput != Vector2.zero)
+        if (playerCanMove_)
         {
 
-            float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
-            movementInput = Vector2.Lerp(movementInput, newMovementInput, realBuildUpSpeed);
+            newMovementInput = playerInput.movementInput;
 
-            if (!jumping)
+            if (newMovementInput != Vector2.zero)
             {
 
-                playerAnimator.SetBool("Run", false);
-                playerAnimator.SetBool("Walk", true);
-                playerAnimator.SetBool("Idle", false);
+                float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
+                movementInput = Vector2.Lerp(movementInput, newMovementInput, realBuildUpSpeed);
 
-                if (running)
+                if (!jumping)
                 {
-                    currentSpeed = startSpeed * speedMultiplier;
-                    playerAnimator.SetBool("Walk", false);
-                    playerAnimator.SetBool("Run", true);
 
+                    playerAnimator.SetBool("Run", false);
+                    playerAnimator.SetBool("Walk", true);
+                    playerAnimator.SetBool("Idle", false);
+
+                    if (running)
+                    {
+                        currentSpeed = startSpeed * speedMultiplier;
+                        playerAnimator.SetBool("Walk", false);
+                        playerAnimator.SetBool("Run", true);
+
+                    }
                 }
+                heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
+                   Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
+
+                heading.y = 0.0f;
+
+                transform.forward = transform.forward;//Vector3.Slerp(transform.forward, heading, rotationSpeed * Time.deltaTime);
+
+                rb.velocity = heading * currentSpeed;
+
+                if (dashAction)
+                {
+                    rb.velocity *= dashForce;
+                    dashAction = false;
+                }
+
+                if (currentDashCooldown >= 0)
+                    currentDashCooldown--;
+                else canDash = true;
+
+                playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
+
+                currentSpeed = startSpeed;
             }
-            heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
-               Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
 
-            heading.y = 0.0f;
-
-            transform.forward = transform.forward;//Vector3.Slerp(transform.forward, heading, rotationSpeed * Time.deltaTime);
-
-            rb.velocity = heading * currentSpeed;
-
-            if (dashAction)
+            else
             {
-                rb.velocity *= dashForce;
-                dashAction = false;
+                rb.velocity = Vector3.zero;
+
+                playerAnimator.SetBool("Walk", false);
+                playerAnimator.SetBool("Idle", true);
+                playerAnimator.SetBool("Run", false);
             }
 
-            if (currentDashCooldown >= 0)
-                currentDashCooldown--;
-            else canDash = true;
-
-            playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
-
-            currentSpeed = startSpeed;
+            if (jumping)
+                rb.velocity += Physics.gravity * GravityMultiplier * Time.deltaTime;
         }
+    }
 
-        else
-        {
-            rb.velocity = Vector3.zero;
+    public void DisablePlayerMovement()
+    {
+        playerCanMove_ = false;
+    }
 
-            playerAnimator.SetBool("Walk", false);
-            playerAnimator.SetBool("Idle", true);
-            playerAnimator.SetBool("Run", false);
-        }
-
-        if (jumping)
-            rb.velocity += Physics.gravity * GravityMultiplier * Time.deltaTime;
-
+    public void EnablePlayerMovement()
+    {
+        playerCanMove_ = true;
     }
 
     public void jump()

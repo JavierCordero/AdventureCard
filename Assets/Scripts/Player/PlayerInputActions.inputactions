@@ -848,6 +848,44 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PlayerActions",
+            "id": "8a380a77-2907-4a0c-aa53-d29b8aa86e04",
+            "actions": [
+                {
+                    "name": "PlayerTargetSelector",
+                    "type": "Button",
+                    "id": "a0d792cb-fc0e-4a49-995c-52a8bdfc7241",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bd4eb172-3e8b-4646-b57a-a1d75db9459d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PlayerTargetSelector",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "233aded9-a960-4179-a33f-c3588820892e",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "PlayerTargetSelector",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

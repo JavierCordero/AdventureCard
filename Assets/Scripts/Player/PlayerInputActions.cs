@@ -861,6 +861,44 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerActions"",
+            ""id"": ""8a380a77-2907-4a0c-aa53-d29b8aa86e04"",
+            ""actions"": [
+                {
+                    ""name"": ""PlayerTargetSelector"",
+                    ""type"": ""Button"",
+                    ""id"": ""a0d792cb-fc0e-4a49-995c-52a8bdfc7241"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""bd4eb172-3e8b-4646-b57a-a1d75db9459d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PlayerTargetSelector"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""233aded9-a960-4179-a33f-c3588820892e"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PlayerTargetSelector"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -946,6 +984,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // PlayerActions
+        m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
+        m_PlayerActions_PlayerTargetSelector = m_PlayerActions.FindAction("PlayerTargetSelector", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1169,6 +1210,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // PlayerActions
+    private readonly InputActionMap m_PlayerActions;
+    private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
+    private readonly InputAction m_PlayerActions_PlayerTargetSelector;
+    public struct PlayerActionsActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public PlayerActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PlayerTargetSelector => m_Wrapper.m_PlayerActions_PlayerTargetSelector;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActionsActions instance)
+        {
+            if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
+            {
+                @PlayerTargetSelector.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
+                @PlayerTargetSelector.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
+                @PlayerTargetSelector.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
+            }
+            m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PlayerTargetSelector.started += instance.OnPlayerTargetSelector;
+                @PlayerTargetSelector.performed += instance.OnPlayerTargetSelector;
+                @PlayerTargetSelector.canceled += instance.OnPlayerTargetSelector;
+            }
+        }
+    }
+    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1235,5 +1309,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IPlayerActionsActions
+    {
+        void OnPlayerTargetSelector(InputAction.CallbackContext context);
     }
 }

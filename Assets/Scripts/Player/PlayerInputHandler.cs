@@ -12,8 +12,8 @@ public class PlayerInputHandler : MonoBehaviour
     public bool running { get; protected set; }
 
     private PlayerInputActions playerInputActions;
-    private PlayerMovement playerMovement; 
-
+    private PlayerMovement playerMovement;
+    private PlayerTargetSelector playerTargetSelector_;
     void Awake()
     {
         InitInput();
@@ -28,6 +28,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         if (!playerMovement)
             playerMovement = new PlayerMovement();
+
+        if (!playerTargetSelector_)
+            playerTargetSelector_ = GetComponent<PlayerTargetSelector>();
     }
 
     void OnEnable()
@@ -40,6 +43,8 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Run.canceled += Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
         playerInputActions.PlayerControls.Dash.performed += Dash_Performed;
+        playerInputActions.PlayerActions.PlayerTargetSelector.performed += Target_Selector_Performed;
+        playerInputActions.PlayerActions.PlayerTargetSelector.canceled += Target_Selector_Cancelled;
         //playerInputActions.PlayerControls.QuitGame.performed += Exit_Game;     
 
     }
@@ -52,6 +57,10 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
         playerInputActions.PlayerControls.Dash.performed -= Dash_Performed;
+
+        playerInputActions.PlayerActions.PlayerTargetSelector.performed -= Target_Selector_Performed;
+        playerInputActions.PlayerActions.PlayerTargetSelector.canceled -= Target_Selector_Cancelled;
+
         //playerInputActions.PlayerControls.QuitGame.performed -= Exit_Game;
 
         playerInputActions.Disable();
@@ -84,6 +93,16 @@ public class PlayerInputHandler : MonoBehaviour
     private void Dash_Performed(InputAction.CallbackContext context)
     {
         playerMovement.dash();
+    }
+
+    private void Target_Selector_Performed(InputAction.CallbackContext context)
+    {
+        playerTargetSelector_.EnableTargetSelector();
+    }
+
+    private void Target_Selector_Cancelled(InputAction.CallbackContext context)
+    {
+        playerTargetSelector_.DisableTargetSelector();
     }
 
     private void Exit_Game(InputAction.CallbackContext context)
