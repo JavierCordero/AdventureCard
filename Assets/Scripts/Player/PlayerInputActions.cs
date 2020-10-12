@@ -873,6 +873,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Roll"",
+                    ""type"": ""Button"",
+                    ""id"": ""9db48425-c236-4bee-a731-228fba2969c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -890,11 +898,33 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""233aded9-a960-4179-a33f-c3588820892e"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""PlayerTargetSelector"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4a72009-fc5d-43c9-8275-28560966c0f2"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Roll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb9d1d67-4b8f-490c-bf75-cdc5d7e677ba"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Roll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -987,6 +1017,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         // PlayerActions
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
         m_PlayerActions_PlayerTargetSelector = m_PlayerActions.FindAction("PlayerTargetSelector", throwIfNotFound: true);
+        m_PlayerActions_Roll = m_PlayerActions.FindAction("Roll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1215,11 +1246,13 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputActionMap m_PlayerActions;
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_PlayerTargetSelector;
+    private readonly InputAction m_PlayerActions_Roll;
     public struct PlayerActionsActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlayerTargetSelector => m_Wrapper.m_PlayerActions_PlayerTargetSelector;
+        public InputAction @Roll => m_Wrapper.m_PlayerActions_Roll;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1232,6 +1265,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @PlayerTargetSelector.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
                 @PlayerTargetSelector.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
                 @PlayerTargetSelector.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
+                @Roll.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
+                @Roll.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
+                @Roll.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1239,6 +1275,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @PlayerTargetSelector.started += instance.OnPlayerTargetSelector;
                 @PlayerTargetSelector.performed += instance.OnPlayerTargetSelector;
                 @PlayerTargetSelector.canceled += instance.OnPlayerTargetSelector;
+                @Roll.started += instance.OnRoll;
+                @Roll.performed += instance.OnRoll;
+                @Roll.canceled += instance.OnRoll;
             }
         }
     }
@@ -1313,5 +1352,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     public interface IPlayerActionsActions
     {
         void OnPlayerTargetSelector(InputAction.CallbackContext context);
+        void OnRoll(InputAction.CallbackContext context);
     }
 }

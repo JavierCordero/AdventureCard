@@ -45,6 +45,7 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Dash.performed += Dash_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.performed += Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled += Target_Selector_Cancelled;
+        playerInputActions.PlayerActions.Roll.performed += Roll_Performed;
         //playerInputActions.PlayerControls.QuitGame.performed += Exit_Game;     
 
     }
@@ -60,6 +61,8 @@ public class PlayerInputHandler : MonoBehaviour
 
         playerInputActions.PlayerActions.PlayerTargetSelector.performed -= Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled -= Target_Selector_Cancelled;
+
+        playerInputActions.PlayerActions.Roll.performed -= Roll_Performed;
 
         //playerInputActions.PlayerControls.QuitGame.performed -= Exit_Game;
 
@@ -103,6 +106,11 @@ public class PlayerInputHandler : MonoBehaviour
     private void Target_Selector_Cancelled(InputAction.CallbackContext context)
     {
         playerTargetSelector_.DisableTargetSelector();
+    }
+
+    private void Roll_Performed(InputAction.CallbackContext context)
+    {
+        playerMovement.Roll();
     }
 
     private void Exit_Game(InputAction.CallbackContext context)

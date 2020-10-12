@@ -14,6 +14,9 @@ public class CameraMovement : MonoBehaviour
 
     private PlayerInputActions inputActions;
 
+    //[HideInInspector]
+    public float TimeCameraReduction = 1;
+
     public void Awake()
     {
         _freeLookComponent = GetComponent<CinemachineFreeLook>();
@@ -44,8 +47,8 @@ public class CameraMovement : MonoBehaviour
         if (lookMovement != Vector2.zero)
         {
             //Ajust axis values using look speed and Time.deltaTime so the look doesn't go faster if there is more FPS
-            _freeLookComponent.m_XAxis.Value += lookMovement.x * LookSpeed * Time.deltaTime;
-            _freeLookComponent.m_YAxis.Value += lookMovement.y * LookSpeed * Time.deltaTime;
+            _freeLookComponent.m_XAxis.Value += lookMovement.x * LookSpeed * Time.deltaTime * TimeCameraReduction;
+            _freeLookComponent.m_YAxis.Value += lookMovement.y * LookSpeed * Time.deltaTime * TimeCameraReduction;
         }
     }
     // Update the look movement each time the event is trigger

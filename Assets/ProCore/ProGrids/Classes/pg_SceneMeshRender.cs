@@ -29,19 +29,19 @@ public class pg_SceneMeshRender : MonoBehaviour
 		// instead of relying on 'SceneCamera' string comparison, check if the hideflags match.
 		// this could probably even just check for one bit match, since chances are that any 
 		// game view camera isn't going to have hideflags set.
-		if( (Camera.current.gameObject.hideFlags & SceneCameraHideFlags) != SceneCameraHideFlags || Camera.current.name != "SceneCamera" )
-			return;
+		//if( (Camera.current.gameObject.hideFlags & SceneCameraHideFlags) != SceneCameraHideFlags || Camera.current.name != "SceneCamera" )
+		//	return;
 
-		if(material == null || mesh == null)
-		{
+		//if(material == null || mesh == null)
+		//{
 			
-			GameObject.DestroyImmediate(this.gameObject);
-			// Debug.Log("NULL MESH || MATERIAL");
-			return;
-		}
+		//	GameObject.DestroyImmediate(this.gameObject);
+		//	// Debug.Log("NULL MESH || MATERIAL");
+		//	return;
+		//}
 
-		material.SetPass(0);
-		Graphics.DrawMeshNow(mesh, Vector3.zero, Quaternion.identity, 0);
+		//material.SetPass(0);
+		//Graphics.DrawMeshNow(mesh, Vector3.zero, Quaternion.identity, 0);
 	}
 }
 #endif

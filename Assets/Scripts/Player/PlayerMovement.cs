@@ -49,6 +49,17 @@ public class PlayerMovement : MonoBehaviour
 
     private bool playerCanMove_ = true;
 
+    private bool playerRolling_ = false;
+
+    private PlayerManager playerData_;
+
+    private Vector2 playerRollDirection;
+
+    [SerializeField]
+    private float rollCooldown = 2;
+
+    [SerializeField]
+    private PlayerAnimationController animationController;
     void Awake()
     {
         forward = Camera.main.transform.forward;
@@ -56,11 +67,18 @@ public class PlayerMovement : MonoBehaviour
         forward.Normalize();
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
-        rb = GetComponent<Rigidbody>();
-        playerInput = GetComponent<PlayerInputHandler>();
+       
 
         currentSpeed = startSpeed;
     }
+
+    private void Start()
+    {
+        playerData_ = GetComponent<PlayerManager>();
+        rb = GetComponent<Rigidbody>();
+        playerInput = GetComponent<PlayerInputHandler>();
+    }
+
 
     private void Update()
     {
@@ -90,10 +108,20 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerCanMove_)
         {
-
             newMovementInput = playerInput.movementInput;
 
-            if (newMovementInput != Vector2.zero)
+            if (playerRolling_)
+            {
+                newMovementInput = playerRollDirection;
+                currentSpeed = startSpeed * speedMultiplier;         
+            }
+
+            if(playerInput.movementInput == Vector2.zero)
+            {
+                SetIdlePlayer();
+            }
+
+            else
             {
 
                 float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
@@ -102,16 +130,12 @@ public class PlayerMovement : MonoBehaviour
                 if (!jumping)
                 {
 
-                    playerAnimator.SetBool("Run", false);
-                    playerAnimator.SetBool("Walk", true);
-                    playerAnimator.SetBool("Idle", false);
+                    animationController.EnableWalk();
 
                     if (running)
                     {
                         currentSpeed = startSpeed * speedMultiplier;
-                        playerAnimator.SetBool("Walk", false);
-                        playerAnimator.SetBool("Run", true);
-
+                        animationController.EnableRun();
                     }
                 }
                 heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
@@ -138,18 +162,22 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = startSpeed;
             }
 
-            else
-            {
-                rb.velocity = Vector3.zero;
-
-                playerAnimator.SetBool("Walk", false);
-                playerAnimator.SetBool("Idle", true);
-                playerAnimator.SetBool("Run", false);
-            }
 
             if (jumping)
                 rb.velocity += Physics.gravity * GravityMultiplier * Time.deltaTime;
         }
+
+        else
+        {
+            SetIdlePlayer();
+        }
+    }
+
+    private void SetIdlePlayer()
+    {
+        rb.velocity = Vector3.zero;
+
+        animationController.EnableIdle();
     }
 
     public void DisablePlayerMovement()
@@ -160,6 +188,24 @@ public class PlayerMovement : MonoBehaviour
     public void EnablePlayerMovement()
     {
         playerCanMove_ = true;
+    }
+
+    public void Roll()
+    {
+        if (!playerRolling_ && running)
+        {
+            playerRollDirection = playerInput.movementInput;
+            playerData_.PlayerInvencible(true);
+            playerRolling_ = true;
+            animationController.Roll();
+            Invoke("StopRolling", rollCooldown);
+        }
+    }
+
+    public void StopRolling()
+    {
+        playerData_.PlayerInvencible(false);
+        playerRolling_ = false;
     }
 
     public void jump()
