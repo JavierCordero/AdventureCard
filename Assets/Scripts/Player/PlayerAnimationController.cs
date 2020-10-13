@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerAnimationController : MonoBehaviour
 {
     Animator anim;
@@ -17,6 +17,15 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
+    }
+
+    public void StartGameAnimation()
+    {
+        anim.SetBool("Run", false);
+        anim.SetBool("Walk", false);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Roll", false);
+        anim.SetBool("StartGame", true);
     }
 
     public void Roll()
@@ -54,6 +63,11 @@ public class PlayerAnimationController : MonoBehaviour
     public void EnableAtack(int index)
     {
         anim.SetInteger("Atack", index);
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 
 }

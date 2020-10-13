@@ -41,6 +41,7 @@ public class PlayerTargetSelector : MonoBehaviour
 
     private bool killingEnemies = false;
 
+    public bool CanSetTarget = true;
     void Start()
     {
         cameraMovement_ = secondCamera_.transform.GetChild(0).GetComponent<CameraMovement>();
@@ -76,7 +77,8 @@ public class PlayerTargetSelector : MonoBehaviour
                 if (!targets.Contains(hit.transform.gameObject))
                 {
                     targets.Add(hit.transform.gameObject);
-                    hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    hit.transform.GetChild(1).gameObject.SetActive(true);
+                    //hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
                 }
 
             }
@@ -117,18 +119,19 @@ public class PlayerTargetSelector : MonoBehaviour
 
     public void EnableTargetSelector()
     {
-        Time.timeScale = timeReduction;
+        if(CanSetTarget){
+            Time.timeScale = timeReduction;
 
-        playerMovement_.DisablePlayerMovement();
-        
-        //cameraBrain_.enabled = false;
-        
-        mainCamera_.SetActive(false);
-        secondCamera_.SetActive(true);
-        cameraMovement_.TimeCameraReduction = 1 + timeReduction;
-        TargetSelectorModeEnabled = true;
-        //mainCamera_.transform.position = targetCameraTransform_.position;
-    }
+            playerMovement_.DisablePlayerMovement();
+
+            //cameraBrain_.enabled = false;
+
+            mainCamera_.SetActive(false);
+            secondCamera_.SetActive(true);
+            cameraMovement_.TimeCameraReduction = 1 + timeReduction;
+            TargetSelectorModeEnabled = true;
+            //mainCamera_.transform.position = targetCameraTransform_.position;
+        } }
 
     public void DisableTargetSelector()
     {
@@ -183,7 +186,7 @@ public class PlayerTargetSelector : MonoBehaviour
 
             player.transform.position = targets[0].transform.GetChild(0).position;
 
-            var lookPos = -targets[0].transform.position - player.transform.position;
+            var lookPos = targets[0].transform.GetChild(1).position - player.transform.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);
             player.transform.rotation = rotation;// Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 10);

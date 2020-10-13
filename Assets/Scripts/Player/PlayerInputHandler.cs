@@ -14,23 +14,22 @@ public class PlayerInputHandler : MonoBehaviour
     private PlayerInputActions playerInputActions;
     private PlayerMovement playerMovement;
     private PlayerTargetSelector playerTargetSelector_;
+    private PlayerInteraction playerInteraction_;
     void Awake()
     {
         InitInput();
     }
 
-	private void InitInput()
+    private void InitInput()
     {
         if (playerInputActions == null)
             playerInputActions = new PlayerInputActions();
 
         playerMovement = GetComponent<PlayerMovement>();
+        playerTargetSelector_ = GetComponent<PlayerTargetSelector>();
 
-        if (!playerMovement)
-            playerMovement = new PlayerMovement();
+        playerInteraction_ = GetComponent<PlayerInteraction>();
 
-        if (!playerTargetSelector_)
-            playerTargetSelector_ = GetComponent<PlayerTargetSelector>();
     }
 
     void OnEnable()
@@ -41,11 +40,11 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Move.canceled += Move_Cancelled;
         playerInputActions.PlayerControls.Run.performed += Run_Performed;
         playerInputActions.PlayerControls.Run.canceled += Run_Cancelled;
-        playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
-        playerInputActions.PlayerControls.Dash.performed += Dash_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.performed += Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled += Target_Selector_Cancelled;
         playerInputActions.PlayerActions.Roll.performed += Roll_Performed;
+
+        playerInputActions.PlayerActions.Interaction.performed += Interaction_Performed;
         //playerInputActions.PlayerControls.QuitGame.performed += Exit_Game;     
 
     }
@@ -56,11 +55,11 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Move.canceled -= Move_Cancelled;
         playerInputActions.PlayerControls.Run.performed -= Run_Performed;
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
-        playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
-        playerInputActions.PlayerControls.Dash.performed -= Dash_Performed;
 
         playerInputActions.PlayerActions.PlayerTargetSelector.performed -= Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled -= Target_Selector_Cancelled;
+
+        playerInputActions.PlayerActions.Interaction.performed -= Interaction_Performed;
 
         playerInputActions.PlayerActions.Roll.performed -= Roll_Performed;
 
@@ -80,39 +79,51 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Run_Performed(InputAction.CallbackContext context)
     {
-        playerMovement.running = true;
+        if (playerMovement)
+            playerMovement.running = true;
     }
 
     private void Run_Cancelled(InputAction.CallbackContext context)
     {
-        playerMovement.running = false;
+        if (playerMovement)
+            playerMovement.running = false;
     }
 
     private void Jump_Performed(InputAction.CallbackContext context)
     {
-        playerMovement.jump();
+        if (playerMovement)
+            playerMovement.jump();
     }
 
     private void Dash_Performed(InputAction.CallbackContext context)
     {
+        if(playerMovement)
         playerMovement.dash();
     }
 
     private void Target_Selector_Performed(InputAction.CallbackContext context)
     {
-        playerTargetSelector_.EnableTargetSelector();
+        if (playerTargetSelector_)
+            playerTargetSelector_.EnableTargetSelector();
     }
 
     private void Target_Selector_Cancelled(InputAction.CallbackContext context)
     {
+        if(playerTargetSelector_)
         playerTargetSelector_.DisableTargetSelector();
     }
 
     private void Roll_Performed(InputAction.CallbackContext context)
     {
+        if(playerMovement)
         playerMovement.Roll();
     }
 
+    private void Interaction_Performed(InputAction.CallbackContext context)
+    {
+        if(playerInteraction_)
+            playerInteraction_.actionPerformed = true;
+    }
     private void Exit_Game(InputAction.CallbackContext context)
     {
         //GameManager.Instance.QuitGame();

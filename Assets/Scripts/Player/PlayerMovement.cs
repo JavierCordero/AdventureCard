@@ -51,9 +51,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool playerRolling_ = false;
 
-    private PlayerManager playerData_;
-
     private Vector2 playerRollDirection;
+
+    public bool CanRoll = true;
 
     [SerializeField]
     private float rollCooldown = 2;
@@ -74,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        playerData_ = GetComponent<PlayerManager>();
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInputHandler>();
     }
@@ -192,10 +191,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Roll()
     {
-        if (!playerRolling_ && running)
+        if (CanRoll && !playerRolling_ && running)
         {
             playerRollDirection = playerInput.movementInput;
-            playerData_.PlayerInvencible(true);
+            PlayerManager.Instance.PlayerInvencible(true);
             playerRolling_ = true;
             animationController.Roll();
             Invoke("StopRolling", rollCooldown);
@@ -204,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void StopRolling()
     {
-        playerData_.PlayerInvencible(false);
+        PlayerManager.Instance.PlayerInvencible(false);
         playerRolling_ = false;
     }
 
