@@ -829,6 +829,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b991b9a-9ea0-4ac0-9832-5a170a1292a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -895,6 +903,39 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Interaction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6dab0893-37ee-4505-b821-0e262d3470bb"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""21e00b7c-c73e-49c5-a821-16fc8401fdc5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bd0330c7-30a8-46f3-a112-c89f04eed3fd"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -987,6 +1028,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_PlayerActions_PlayerTargetSelector = m_PlayerActions.FindAction("PlayerTargetSelector", throwIfNotFound: true);
         m_PlayerActions_Roll = m_PlayerActions.FindAction("Roll", throwIfNotFound: true);
         m_PlayerActions_Interaction = m_PlayerActions.FindAction("Interaction", throwIfNotFound: true);
+        m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1201,6 +1243,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_PlayerTargetSelector;
     private readonly InputAction m_PlayerActions_Roll;
     private readonly InputAction m_PlayerActions_Interaction;
+    private readonly InputAction m_PlayerActions_Pause;
     public struct PlayerActionsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1208,6 +1251,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @PlayerTargetSelector => m_Wrapper.m_PlayerActions_PlayerTargetSelector;
         public InputAction @Roll => m_Wrapper.m_PlayerActions_Roll;
         public InputAction @Interaction => m_Wrapper.m_PlayerActions_Interaction;
+        public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1226,6 +1270,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Interaction.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteraction;
                 @Interaction.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteraction;
                 @Interaction.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteraction;
+                @Pause.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -1239,6 +1286,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Interaction.started += instance.OnInteraction;
                 @Interaction.performed += instance.OnInteraction;
                 @Interaction.canceled += instance.OnInteraction;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1313,5 +1363,6 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnPlayerTargetSelector(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }
