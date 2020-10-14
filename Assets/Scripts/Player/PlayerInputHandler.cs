@@ -36,13 +36,18 @@ public class PlayerInputHandler : MonoBehaviour
     {
         playerInputActions.Enable();
 
+        //Player controls
         playerInputActions.PlayerControls.Move.performed += Move_Performed;
         playerInputActions.PlayerControls.Move.canceled += Move_Cancelled;
         playerInputActions.PlayerControls.Run.performed += Run_Performed;
         playerInputActions.PlayerControls.Run.canceled += Run_Cancelled;
+        playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
+
+        //Player actions
         playerInputActions.PlayerActions.PlayerTargetSelector.performed += Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled += Target_Selector_Cancelled;
         playerInputActions.PlayerActions.Roll.performed += Roll_Performed;
+
 
         playerInputActions.PlayerActions.Interaction.performed += Interaction_Performed;
         //playerInputActions.PlayerControls.QuitGame.performed += Exit_Game;     
@@ -55,6 +60,7 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Move.canceled -= Move_Cancelled;
         playerInputActions.PlayerControls.Run.performed -= Run_Performed;
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
+        playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
 
         playerInputActions.PlayerActions.PlayerTargetSelector.performed -= Target_Selector_Performed;
         playerInputActions.PlayerActions.PlayerTargetSelector.canceled -= Target_Selector_Cancelled;
@@ -91,6 +97,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Jump_Performed(InputAction.CallbackContext context)
     {
+
         if (playerMovement)
             playerMovement.jump();
     }
