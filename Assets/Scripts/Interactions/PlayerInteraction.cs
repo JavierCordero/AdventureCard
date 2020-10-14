@@ -28,7 +28,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(playerEyes.transform.position, playerEyes.transform.forward, out hit, InteracionDistance, OnlyMaskToInteract))
         {
-            if (InteractionText)
+            if (InteractionText && hit.transform.gameObject.GetComponent<InteractionInterface>() != null)
                 InteractionText.SetActive(true);
 
             if(actionPerformed)
