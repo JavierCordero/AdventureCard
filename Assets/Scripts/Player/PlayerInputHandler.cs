@@ -11,6 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     public bool running { get; protected set; }
 
+    public GameObject PauseCanvas;
+
     private PlayerInputActions playerInputActions;
     private PlayerMovement playerMovement;
     private PlayerTargetSelector playerTargetSelector_;
@@ -50,6 +52,10 @@ public class PlayerInputHandler : MonoBehaviour
 
 
         playerInputActions.PlayerActions.Interaction.performed += Interaction_Performed;
+
+
+        playerInputActions.PlayerActions.Pause.performed += SetPauseMode;
+
         //playerInputActions.PlayerControls.QuitGame.performed += Exit_Game;     
 
     }
@@ -69,9 +75,17 @@ public class PlayerInputHandler : MonoBehaviour
 
         playerInputActions.PlayerActions.Roll.performed -= Roll_Performed;
 
+        playerInputActions.PlayerActions.Pause.performed -= SetPauseMode;
+
         //playerInputActions.PlayerControls.QuitGame.performed -= Exit_Game;
 
         playerInputActions.Disable();
+    }
+
+    private void SetPauseMode(InputAction.CallbackContext context)
+    {
+        if (PauseCanvas)
+            PauseCanvas.SetActive(!PauseCanvas.activeSelf);
     }
 
     private void Move_Performed(InputAction.CallbackContext context)

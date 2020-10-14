@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6808715034984670136}
   - component: {fileID: 6808715034984670137}
   - component: {fileID: 6808715034984670139}
-  - component: {fileID: 7552531007218602138}
+  - component: {fileID: 302567206}
   m_Layer: 13
   m_Name: door
   m_TagString: Untagged
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.293001, y: 9.811817, z: 1.1340003}
   m_Center: {x: 2.146511, y: 4.9059086, z: -0.000007693366}
---- !u!114 &7552531007218602138
+--- !u!114 &302567206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,6 +109,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: open
+  m_closed: close
+  m_animation: {fileID: 1622708184}
+  timeToInteractwithDoor: 1
 --- !u!1 &6808715035775058271
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6808715035775058270}
-  - component: {fileID: 6808715035775058257}
+  - component: {fileID: 1622708184}
   m_Layer: 13
   m_Name: Door
   m_TagString: Untagged
@@ -141,22 +145,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -109.392, z: 0}
---- !u!95 &6808715035775058257
-Animator:
-  serializedVersion: 3
+--- !u!111 &1622708184
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6808715035775058271}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1e425a38c2676714eaba0872bb0b6e14, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 5da10f784004b7f4eae573e1ae8ec2da, type: 2}
+  - {fileID: 7400000, guid: 3be7265792af4d74db2c241f21b78909, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

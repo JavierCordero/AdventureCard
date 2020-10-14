@@ -11,7 +11,7 @@ public class MainMenuManager : MonoBehaviour
     public Material DaySkybox, NightSkybox;
     public Transform NightPlayerStandpoint, DayPlayerStandpoint;
 
-    public GameObject[] OpenDayDoors, OpenNightDoors;
+    public GameObject[] CloseDayDoors, CloseNightDoors;
 
     CurrentPlayerFloor myFloor = CurrentPlayerFloor.UpperFloor;
 
@@ -32,8 +32,12 @@ public class MainMenuManager : MonoBehaviour
         Player.transform.position = NightPlayerStandpoint.position;
         UpperFloor.SetActive(false);
 
-        foreach (GameObject g in OpenNightDoors)
-            g.GetComponent<Animator>().SetBool("OpenDoor", true);
+        foreach (GameObject g in CloseNightDoors)
+        {
+            Animation anim = g.GetComponent<Animation>();
+            anim.Play("close");
+            g.GetComponentInChildren<DoorInteraction>().m_state = DoorInteraction.DoorState.Closed;
+        }
     }
 
     public void SetDay()
@@ -45,8 +49,11 @@ public class MainMenuManager : MonoBehaviour
 
         Player.transform.position = DayPlayerStandpoint.position;
 
-        foreach (GameObject g in OpenDayDoors)
-            g.GetComponent<Animator>().SetBool("OpenDoor", true);
+        foreach (GameObject g in CloseDayDoors)
+        {
+            g.GetComponent<Animation>().Play("close");
+            g.GetComponentInChildren<DoorInteraction>().m_state = DoorInteraction.DoorState.Closed;
+        }
     }
 
     public CurrentPlayerFloor getCurrentPlayerFloor()
