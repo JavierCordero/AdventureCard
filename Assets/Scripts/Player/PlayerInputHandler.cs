@@ -113,7 +113,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
 
         if (playerMovement)
-            playerMovement.jump();
+            playerMovement.GetPlayerAnimationController().MakePlayerJump();
     }
 
     private void Dash_Performed(InputAction.CallbackContext context)

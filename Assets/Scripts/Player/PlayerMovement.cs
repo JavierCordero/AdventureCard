@@ -56,16 +56,16 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanRoll = true;
 
-
+    [HideInInspector]
     //Jump variables
-    private bool jumpPressed = false;
+    public bool jumpPressed = false;
     private float fallMultiplier = 2.5f;
     private float lowJumpMultiplier = 2f;
     private bool grounded = true;
     public LayerMask groundLayer;
     private CapsuleCollider capsuleCollider;
     private bool jumping = false;
-
+    private Vector3 rotationLookVector;
     [SerializeField]
     private float rollCooldown = 2;
 
@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         forward.y = 0;
         forward.Normalize();
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
-
+        rotationLookVector = Vector3.zero;
 
 
         currentSpeed = startSpeed;
@@ -115,6 +115,9 @@ public class PlayerMovement : MonoBehaviour
                     
                     rb.velocity += new Vector3(0, Vector3.up.y * jumpForce, 0);
                     jumping = true;
+                    grounded = false;
+                    
+                    //animationController.EnableJump();
                     //Prepare jump anim
                     //TODO:
 
@@ -136,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
             }
             
             
+            
             //Check for input values
             newMovementInput = playerInput.movementInput;
 
@@ -146,8 +150,9 @@ public class PlayerMovement : MonoBehaviour
             //If there is movement do some cool movements :_D
             else
             {
-                if (grounded)
+                if (grounded && !jumping)
                 {
+                    
                     if (running)
                     {
                     currentSpeed = startSpeed * speedMultiplier;
@@ -167,10 +172,12 @@ public class PlayerMovement : MonoBehaviour
                     else 
                     {
                         currentSpeed = startSpeed;
-                        animationController.EnableWalk();
+                       animationController.EnableWalk();
 
                     }
+                    
                 }
+                
 
                 //---- Input movement control
                 float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
@@ -181,10 +188,14 @@ public class PlayerMovement : MonoBehaviour
 
                 //---- Input movement control
 
-                //Set final speed
+                //Set final speed and player rotation
                 rb.velocity = new Vector3(heading.x * currentSpeed, rb.velocity.y, heading.z * currentSpeed);
-                //playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
 
+                rotationLookVector.x = heading.x;
+                rotationLookVector.z = heading.z;
+                    
+                playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(rotationLookVector, Vector3.up), playerRotationSpeed);
+              
             }
 
             //Cooldown timers
@@ -192,8 +203,11 @@ public class PlayerMovement : MonoBehaviour
                 currentDashCooldown--;
             else canDash = true;
 
-            if (grounded && rb.velocity.y == 0)
-                jumping = false;
+            //if (grounded)
+            //{
+            //    jumping = false;
+            //    animationController.DisableJumping();
+            //}
 
 
         } //---- If Player movement END
@@ -207,6 +221,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    public PlayerAnimationController GetPlayerAnimationController() => animationController;
     private void SetIdlePlayer()
     {
         rb.velocity = Vector3.zero;
@@ -240,11 +255,15 @@ public class PlayerMovement : MonoBehaviour
         PlayerManager.Instance.PlayerInvencible(false);
         playerRolling_ = false;
     }
-
-    public void jump()
+   public void SetJumping(bool v)
     {
-        jumpPressed = true;
+        jumping = v;
     }
+    //public void jump()
+    //{
+    //    animationController.EnableJump();
+    //    jumpPressed = true;
+    //}
 
     public void dash()
     {

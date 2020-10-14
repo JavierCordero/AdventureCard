@@ -17,6 +17,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
+        anim.SetBool("Jump", false);
+
     }
 
     public void StartGameAnimation()
@@ -26,6 +28,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
         anim.SetBool("StartGame", true);
+        anim.SetBool("Jump", false);
+
     }
 
     public void Roll()
@@ -34,6 +38,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", true);
+        anim.SetBool("Jump", false);
+
     }
 
     public void EnableWalk()
@@ -42,6 +48,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", true);
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
+        anim.SetBool("Jump", false);
+
     }
 
     public void EnableIdle()
@@ -50,6 +58,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", true);
         anim.SetBool("Roll", false);
+        anim.SetBool("Jump", false);
+
     }
 
     public void DisableAll()
@@ -58,6 +68,33 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
+        anim.SetBool("Jump", false);
+
+    }
+
+    public void MakePlayerJump()
+    {
+        EnableJump();
+        player.SetJumping(true);
+    }
+
+    public void PlayerJumpPressed()
+    {
+        player.jumpPressed = true;
+    }
+    public void EnableJump()
+    {
+        anim.SetBool("Run", false);
+        anim.SetBool("Walk", false);
+        anim.SetBool("Idle", false);
+        anim.SetBool("Roll", false);
+        anim.SetBool("Jump", true);
+
+    }
+    public void DisableJumping()
+    {
+        anim.SetBool("Jump", false);
+        player.SetJumping(false);
     }
 
     public void EnableAtack(int index)
