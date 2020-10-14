@@ -26169,6 +26169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: 
+  m_cosed: 
+  m_animation: {fileID: 0}
 --- !u!1001 &1068478854
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27766,6 +27769,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: 
+  m_cosed: 
+  m_animation: {fileID: 0}
 --- !u!1001 &1119742832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31516,6 +31522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: 
+  m_cosed: 
+  m_animation: {fileID: 0}
 --- !u!1001 &1292200910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39737,6 +39746,21 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &1622708185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622708182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_open: OpenDoor
+  m_cosed: CloseDoor
+  m_animation: {fileID: 1622708184}
 --- !u!1001 &1623225651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42901,6 +42925,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: 
+  m_cosed: 
+  m_animation: {fileID: 0}
 --- !u!1001 &1763650858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52413,6 +52440,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_open: 
+  m_cosed: 
+  m_animation: {fileID: 0}
 --- !u!1001 &6808715036316618377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52480,8 +52510,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 7552531007218602138, guid: e382cace945803149aa2d20d65bc8108,
+        type: 3}
+      propertyPath: m_animation
+      value: 
+      objectReference: {fileID: 1622708184}
     m_RemovedComponents:
     - {fileID: 6808715035775058257, guid: e382cace945803149aa2d20d65bc8108, type: 3}
+    - {fileID: 7552531007218602138, guid: e382cace945803149aa2d20d65bc8108, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e382cace945803149aa2d20d65bc8108, type: 3}
 --- !u!1001 &7459554030099488482
 PrefabInstance:
@@ -52498,22 +52534,22 @@ PrefabInstance:
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00018192582
+      value: 0.0001818927
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00005138393
+      value: -0.00005137458
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169438314961, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 5728866170300604667, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
@@ -52528,7 +52564,7 @@ PrefabInstance:
     - target: {fileID: 5728866170300604667, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 6982254355950929437, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
