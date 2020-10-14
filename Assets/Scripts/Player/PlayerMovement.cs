@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -31,15 +32,15 @@ public class PlayerMovement : MonoBehaviour
     public float playerRotationSpeed = 0.1f;
     public float speedMultiplier = 2.5f;
 
-    public float jumpForce = 4;
+    public float jumpForce = 10.0f;
 
-    private bool jumping = false;
+
 
     public GameObject playerFeet;
 
     public float jumpCooldown = 1.5f;
     private float currentJumpCooldown = 0;
-    private bool canJump = true;
+
 
     private bool dashAction = false, canDash = true;
     public float dashCooldown = 3, dashForce = 2;
@@ -55,6 +56,16 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanRoll = true;
 
+
+    //Jump variables
+    private bool jumpPressed = false;
+    private float fallMultiplier = 2.5f;
+    private float lowJumpMultiplier = 2f;
+    private bool grounded = true;
+    public LayerMask groundLayer;
+    private CapsuleCollider capsuleCollider;
+    private bool jumping = false;
+
     [SerializeField]
     private float rollCooldown = 2;
 
@@ -67,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         forward.Normalize();
         right = Quaternion.Euler(new Vector3(0, 90, 0)) * forward;
 
-       
+
 
         currentSpeed = startSpeed;
     }
@@ -76,30 +87,18 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInputHandler>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
     }
+
 
 
     private void Update()
     {
-        //if (jumping)
-        //{
-        RaycastHit hit;
 
-        Physics.Raycast(new Ray(playerFeet.transform.position, -Vector3.up), out hit, jumpForce / 10);
-        if (hit.collider)
-            jumping = false;
-        else jumping = true;
-        //}
+        grounded = Physics.CheckCapsule(capsuleCollider.bounds.center, new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f,
+            capsuleCollider.bounds.center.z), 0.18f, groundLayer);
+        Debug.Log(grounded);
 
-        //if (!canJump)
-        //{
-        //    currentJumpCooldown += Time.deltaTime;
-        //    if (currentJumpCooldown >= jumpCooldown)
-        //    {
-        //        canJump = true;
-        //        currentJumpCooldown = 0;
-        //    }
-        //}
     }
 
 
@@ -107,75 +106,110 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerCanMove_)
         {
+            //---Jump Control
+            if (jumpPressed)
+            {
+               
+                if (grounded)
+                {
+                    
+                    rb.velocity += new Vector3(0, Vector3.up.y * jumpForce, 0);
+                    jumping = true;
+                    //Prepare jump anim
+                    //TODO:
+
+                }
+                jumpPressed = false;
+
+            }
+
+
+            if (!grounded)
+            {
+                if (rb.velocity.y < 0)
+                    rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
+                else if (rb.velocity.y > 0 && !jumpPressed)
+                    rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
+
+                //In air animation
+                
+            }
+            
+            
+            //Check for input values
             newMovementInput = playerInput.movementInput;
 
-            if (playerRolling_)
-            {
-                newMovementInput = playerRollDirection;
-                currentSpeed = startSpeed * speedMultiplier;         
-            }
-
-            if(playerInput.movementInput == Vector2.zero)
-            {
+            //If there is no movement and player is touching the ground set IDLE
+            if (!jumping && newMovementInput == Vector2.zero)
                 SetIdlePlayer();
-            }
 
+            //If there is movement do some cool movements :_D
             else
             {
+                if (grounded)
+                {
+                    if (running)
+                    {
+                    currentSpeed = startSpeed * speedMultiplier;
+                    animationController.EnableRun();
+                    }
+                    else if (dashAction)
+                    {
+                        rb.velocity *= dashForce;
+                        dashAction = false;
+                    }
+                    else if (playerRolling_)
+                    {
+                        newMovementInput = playerRollDirection;
+                        currentSpeed = startSpeed * speedMultiplier;
+                    }
+                    //Else im walking 
+                    else 
+                    {
+                        currentSpeed = startSpeed;
+                        animationController.EnableWalk();
 
+                    }
+                }
+
+                //---- Input movement control
                 float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
                 movementInput = Vector2.Lerp(movementInput, newMovementInput, realBuildUpSpeed);
 
-                if (!jumping)
-                {
-
-                    animationController.EnableWalk();
-
-                    if (running)
-                    {
-                        currentSpeed = startSpeed * speedMultiplier;
-                        animationController.EnableRun();
-                    }
-                }
                 heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
-                   Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
+                      Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
 
-                heading.y = 0.0f;
+                //---- Input movement control
 
-                transform.forward = transform.forward;//Vector3.Slerp(transform.forward, heading, rotationSpeed * Time.deltaTime);
+                //Set final speed
+                rb.velocity = new Vector3(heading.x * currentSpeed, rb.velocity.y, heading.z * currentSpeed);
+                //playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
 
-                rb.velocity = heading * currentSpeed;
-
-                if (dashAction)
-                {
-                    rb.velocity *= dashForce;
-                    dashAction = false;
-                }
-
-                if (currentDashCooldown >= 0)
-                    currentDashCooldown--;
-                else canDash = true;
-
-                playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
-
-                currentSpeed = startSpeed;
             }
 
+            //Cooldown timers
+            if (currentDashCooldown >= 0)
+                currentDashCooldown--;
+            else canDash = true;
 
-            if (jumping)
-                rb.velocity += Physics.gravity * GravityMultiplier * Time.deltaTime;
-        }
+            if (grounded && rb.velocity.y == 0)
+                jumping = false;
 
+
+        } //---- If Player movement END
+
+        //If not player movement
         else
         {
             SetIdlePlayer();
         }
+
+
     }
 
     private void SetIdlePlayer()
     {
         rb.velocity = Vector3.zero;
-
         animationController.EnableIdle();
     }
 
@@ -209,12 +243,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void jump()
     {
-        //if (!jumping && canJump)
-        //{
-        //    canJump = false;
-        //    jumping = true;
-        //    rb.velocity += Vector3.up * jumpForce;
-        //}
+        jumpPressed = true;
     }
 
     public void dash()
