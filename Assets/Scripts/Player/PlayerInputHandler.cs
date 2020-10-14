@@ -85,7 +85,21 @@ public class PlayerInputHandler : MonoBehaviour
     private void SetPauseMode(InputAction.CallbackContext context)
     {
         if (PauseCanvas)
+        {
             PauseCanvas.SetActive(!PauseCanvas.activeSelf);
+            if(PauseCanvas.activeSelf)
+            {
+                Time.timeScale = 0;
+                playerMovement.DisablePlayerMovement();
+            }
+
+            else
+            {
+                Time.timeScale = 1;
+                playerMovement.EnablePlayerMovement();
+            }
+
+        }
     }
 
     private void Move_Performed(InputAction.CallbackContext context)
@@ -118,8 +132,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Dash_Performed(InputAction.CallbackContext context)
     {
-        if(playerMovement)
-        playerMovement.dash();
+        if (playerMovement)
+            playerMovement.dash();
     }
 
     private void Target_Selector_Performed(InputAction.CallbackContext context)
@@ -130,19 +144,19 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Target_Selector_Cancelled(InputAction.CallbackContext context)
     {
-        if(playerTargetSelector_)
-        playerTargetSelector_.DisableTargetSelector();
+        if (playerTargetSelector_)
+            playerTargetSelector_.DisableTargetSelector();
     }
 
     private void Roll_Performed(InputAction.CallbackContext context)
     {
-        if(playerMovement)
-        playerMovement.Roll();
+        if (playerMovement)
+            playerMovement.Roll();
     }
 
     private void Interaction_Performed(InputAction.CallbackContext context)
     {
-        if(playerInteraction_)
+        if (playerInteraction_)
             playerInteraction_.actionPerformed = true;
     }
     private void Exit_Game(InputAction.CallbackContext context)
