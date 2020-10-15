@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 public class StartGameInteraction : MonoBehaviour, InteractionInterface
 {
     private bool interacted = false;
+    public GameObject Animation;
+    public GameObject Player;
+    public GameObject VRHeadset;
 
     public void ActionPerformed()
     {
@@ -11,7 +14,14 @@ public class StartGameInteraction : MonoBehaviour, InteractionInterface
             interacted = true;
             //FindObjectOfType<PlayerAnimationController>().StartGameAnimation();
             //FindObjectOfType<PlayerMovement>().DisablePlayerMovement();
-            SceneManager.LoadScene("GameScene");
+            Animation.SetActive(true);
+            Player.SetActive(false);
+            VRHeadset.GetComponent<Renderer>().enabled = false;
         }
+    }
+
+    public void FinalStartGame()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }
