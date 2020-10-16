@@ -69,6 +69,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float rollCooldown = 2;
 
+    public bool PlayerCanJump = true;
+
     [SerializeField]
     private PlayerAnimationController animationController;
     void Awake()
@@ -88,6 +90,9 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInputHandler>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+
+        FindObjectOfType<GeneralAnimationManager>().FadeOut();
+
     }
 
 
@@ -95,9 +100,13 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
 
-        grounded = Physics.CheckCapsule(capsuleCollider.bounds.center, new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f,
-            capsuleCollider.bounds.center.z), 0.18f, groundLayer);
-        Debug.Log(grounded);
+        
+
+        //grounded = Physics.CheckCapsule(capsuleCollider.bounds.center, new Vector3(capsuleCollider.bounds.center.x, capsuleCollider.bounds.min.y - 0.1f,
+        //    capsuleCollider.bounds.center.z), 0.18f, groundLayer);
+        grounded = Physics.Raycast(playerFeet.transform.position, -Vector3.up, 0.2f);
+        //Debug.DrawRay(playerFeet.transform.position, -Vector3.up * 0.2f, Color.red);
+        //Debug.Log(grounded);
 
     }
 
@@ -129,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (!grounded)
             {
-                if (rb.velocity.y < 0)
+                if (rb.velocity.y <= 0)
                     rb.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
                 else if (rb.velocity.y > 0 && !jumpPressed)
                     rb.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;

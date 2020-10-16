@@ -74,8 +74,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void MakePlayerJump()
     {
-        EnableJump();
-        player.SetJumping(true);
+        if (player.PlayerCanJump)
+        {
+            EnableJump();
+            player.SetJumping(true);
+        }
     }
 
     public void PlayerJumpPressed()

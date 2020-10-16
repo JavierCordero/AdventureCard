@@ -6,6 +6,7 @@ public class StartGameInteraction : MonoBehaviour, InteractionInterface
     public GameObject Animation;
     public GameObject Player;
     public GameObject VRHeadset;
+    public GameObject playerInteractionIcon;
 
     public void ActionPerformed()
     {
@@ -16,12 +17,15 @@ public class StartGameInteraction : MonoBehaviour, InteractionInterface
             //FindObjectOfType<PlayerMovement>().DisablePlayerMovement();
             Animation.SetActive(true);
             Player.SetActive(false);
+            playerInteractionIcon.SetActive(false);
             VRHeadset.GetComponent<Renderer>().enabled = false;
+            
         }
     }
 
     public void FinalStartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        FindObjectOfType<GeneralAnimationManager>().FadeIn();
+        //SceneManager.LoadScene("GameScene");
     }
 }
