@@ -13,6 +13,7 @@ public class PlayerInteraction : MonoBehaviour
 
     [HideInInspector] public bool actionPerformed = false;
 
+    public SpriteRenderer Icon;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,10 @@ public class PlayerInteraction : MonoBehaviour
         if (Physics.Raycast(playerEyes.transform.position, playerEyes.transform.forward, out hit, InteracionDistance, OnlyMaskToInteract))
         {
             if (InteractionText && hit.transform.gameObject.GetComponent<InteractionInterface>() != null)
+            {
                 InteractionText.SetActive(true);
+                Icon.sprite = hit.transform.gameObject.GetComponent<InteractionInterface>().getIcon();
+            }
 
             if(actionPerformed)
                 hit.transform.gameObject.GetComponent<InteractionInterface>().ActionPerformed();

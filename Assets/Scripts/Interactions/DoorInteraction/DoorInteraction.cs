@@ -6,6 +6,8 @@ public class DoorInteraction : MonoBehaviour, InteractionInterface
 {
     public enum DoorState { Closed, Open }
 
+    public Sprite IconSprite;
+
     public string m_open, m_closed;
     public Animation m_animation;
     [HideInInspector]
@@ -49,5 +51,10 @@ public class DoorInteraction : MonoBehaviour, InteractionInterface
                 m_state = DoorState.Closed;
             }
         }
+    }
+
+    public Sprite getIcon()
+    {
+        return IconSprite;
     }
 }

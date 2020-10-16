@@ -8,10 +8,9 @@ public class GeneralAnimationManager : MonoBehaviour
 {
     private bool currentlyWorking = false;
     public Image BlackBG;
-    public string SceneToLoad = "";
-    public void FadeIn()
+    public void FadeIn(string sceneToLoad = "")
     {
-        StartCoroutine(FadeInRoutine());
+        StartCoroutine(FadeInRoutine(sceneToLoad));
     }
 
     public void FadeOut()
@@ -20,7 +19,7 @@ public class GeneralAnimationManager : MonoBehaviour
     }
 
 
-    IEnumerator FadeInRoutine()
+    IEnumerator FadeInRoutine(string sceneToLoad)
     {
         while (currentlyWorking)
             yield return null;
@@ -42,8 +41,8 @@ public class GeneralAnimationManager : MonoBehaviour
         }
         currentlyWorking = false;
 
-        if (SceneToLoad != "")
-            SceneManager.LoadScene("GameScene");
+        if (sceneToLoad != "")
+            SceneManager.LoadScene(sceneToLoad);
 
     }
 

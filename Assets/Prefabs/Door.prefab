@@ -109,9 +109,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0496a8f1a471c1c43b6e7afc16971c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IconSprite: {fileID: 21300000, guid: 54d7ec7ff9ceff14c8724ea6b9b7dc6c, type: 3}
   m_open: open
   m_closed: close
   m_animation: {fileID: 1622708184}
+  m_state: 1
   timeToInteractwithDoor: 1
 --- !u!1 &6808715035775058271
 GameObject:

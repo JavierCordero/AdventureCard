@@ -3230,7 +3230,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776632518021429}
-  m_LocalRotation: {x: 0.29144818, y: 0.00032390136, z: -0.0000986847, w: 0.9565866}
+  m_LocalRotation: {x: 0.29144818, y: 0.00032386844, z: -0.00009867469, w: 0.9565866}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3445,7 +3445,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776633622109588}
-  m_LocalRotation: {x: 0.27200195, y: 0.00033469385, z: -0.00009460429, w: 0.96229666}
+  m_LocalRotation: {x: 0.27200195, y: 0.00033472668, z: -0.00009461356, w: 0.96229666}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4610,8 +4610,8 @@ GameObject:
   - component: {fileID: 8910306825538109632}
   - component: {fileID: 8910306825538109633}
   m_Layer: 0
-  m_Name: SpriteDoor
-  m_TagString: Untagged
+  m_Name: SpriteIcon
+  m_TagString: PlayerInteractionIcon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

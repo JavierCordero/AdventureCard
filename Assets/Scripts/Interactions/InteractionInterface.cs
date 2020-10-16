@@ -4,6 +4,9 @@ using UnityEngine;
 
 public interface InteractionInterface
 {
+
+    Sprite getIcon();
     void ActionPerformed();
+
 
 }
