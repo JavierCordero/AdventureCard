@@ -41,7 +41,7 @@ public class PlayerInputHandler : MonoBehaviour
         //Player controls
         playerInputActions.PlayerControls.Move.performed += Move_Performed;
         playerInputActions.PlayerControls.Move.canceled += Move_Cancelled;
-        playerInputActions.PlayerControls.Run.performed += Run_Performed;
+        playerInputActions.PlayerControls.Run.started += Run_Performed;
         playerInputActions.PlayerControls.Run.canceled += Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
 
@@ -64,7 +64,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         playerInputActions.PlayerControls.Move.performed -= Move_Performed;
         playerInputActions.PlayerControls.Move.canceled -= Move_Cancelled;
-        playerInputActions.PlayerControls.Run.performed -= Run_Performed;
+        playerInputActions.PlayerControls.Run.started -= Run_Performed;
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
 
@@ -90,13 +90,13 @@ public class PlayerInputHandler : MonoBehaviour
             if(PauseCanvas.activeSelf)
             {
                 Time.timeScale = 0;
-                playerMovement.DisablePlayerMovement();
+                playerMovement.EnablePlayerMovement(false);
             }
 
             else
-            {
+            {   
                 Time.timeScale = 1;
-                playerMovement.EnablePlayerMovement();
+                playerMovement.EnablePlayerMovement(true);
             }
 
         }
@@ -105,35 +105,37 @@ public class PlayerInputHandler : MonoBehaviour
     private void Move_Performed(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        playerMovement.ActiveWalk(true);
     }
     private void Move_Cancelled(InputAction.CallbackContext context)
     {
+
         movementInput = Vector2.zero;
+        playerMovement.ActiveWalk(false);
     }
 
     private void Run_Performed(InputAction.CallbackContext context)
     {
         if (playerMovement)
-            playerMovement.running = true;
+            playerMovement.ActiveRun(true);
     }
 
     private void Run_Cancelled(InputAction.CallbackContext context)
     {
         if (playerMovement)
-            playerMovement.running = false;
+            playerMovement.ActiveRun(false);
     }
 
     private void Jump_Performed(InputAction.CallbackContext context)
     {
-
         if (playerMovement)
-            playerMovement.GetPlayerAnimationController().MakePlayerJump();
+            playerMovement.ActiveJump();
     }
 
     private void Dash_Performed(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.dash();
+        //if (playerMovement)
+        //    playerMovement.dash();
     }
 
     private void Target_Selector_Performed(InputAction.CallbackContext context)
@@ -151,7 +153,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void Roll_Performed(InputAction.CallbackContext context)
     {
         if (playerMovement)
-            playerMovement.Roll();
+            playerMovement.ActiveRoll();
     }
 
     private void Interaction_Performed(InputAction.CallbackContext context)

@@ -54,11 +54,11 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void EnableIdle()
     {
-        anim.SetBool("Run", false);
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", true);
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", false);
+        anim.SetBool("Run", false);
 
     }
 
@@ -72,19 +72,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     }
 
-    public void MakePlayerJump()
-    {
-        if (player.PlayerCanJump)
-        {
-            EnableJump();
-            player.SetJumping(true);
-        }
-    }
-
-    public void PlayerJumpPressed()
-    {
-        player.jumpPressed = true;
-    }
     public void EnableJump()
     {
         anim.SetBool("Run", false);
@@ -93,11 +80,6 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", true);
 
-    }
-    public void DisableJumping()
-    {
-        anim.SetBool("Jump", false);
-        player.SetJumping(false);
     }
 
     public void EnableAtack(int index)

@@ -122,7 +122,7 @@ public class PlayerTargetSelector : MonoBehaviour
         if(CanSetTarget){
             Time.timeScale = timeReduction;
 
-            playerMovement_.DisablePlayerMovement();
+            playerMovement_.EnablePlayerMovement(false);
 
             //cameraBrain_.enabled = false;
 
@@ -156,7 +156,7 @@ public class PlayerTargetSelector : MonoBehaviour
 
         Time.timeScale = 1;
         currentSelectorTime = 0;
-        playerMovement_.EnablePlayerMovement();    
+        playerMovement_.EnablePlayerMovement(true);    
     }
 
     private void KillAllEnemies()

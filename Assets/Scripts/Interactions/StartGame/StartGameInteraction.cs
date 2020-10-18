@@ -19,7 +19,7 @@ public class StartGameInteraction : MonoBehaviour, InteractionInterface
             //FindObjectOfType<PlayerMovement>().DisablePlayerMovement();
             Animation.SetActive(true);
             Player.SetActive(false);
-            playerInteractionIcon.SetActive(false);s
+            playerInteractionIcon.SetActive(false);
             VRHeadset.GetComponent<Renderer>().enabled = false;
             
         }
