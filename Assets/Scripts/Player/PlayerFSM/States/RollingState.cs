@@ -42,16 +42,22 @@ public class RollingState : MovingState
         base.LogicUpdate();
         rollTimer += Time.deltaTime;
 
-        if (rollTimer >= playerMovement.rollCooldown)
+        float cd = 0;
+        if (run)
+            cd = playerMovement.rollRunCooldown;
+        else
+            cd = playerMovement.rollWalkCooldown;
+
+        if (rollTimer >= cd)
         {
             roll = false;
             PlayerManager.Instance.PlayerInvencible(false);
             if (run)
                 stateMachine.ChangeState(playerMovement.runningState);
-            else if (movement)
+            else //if (movement)
                 stateMachine.ChangeState(playerMovement.walkingState);
-            else
-                stateMachine.ChangeState(playerMovement.standingState);
+            //else
+            //    stateMachine.ChangeState(playerMovement.standingState);
         }
 
     }

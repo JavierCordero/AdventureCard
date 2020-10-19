@@ -22,8 +22,9 @@ public class PlayerMovement : MonoBehaviour
     public float speedMultiplier = 2.5f;
     public float jumpForce = 10.0f;
 
-    [HideInInspector]
-    public float rollCooldown = 1.1f;
+
+    public float rollWalkCooldown = 0.8f;
+    public float rollRunCooldown = 1.1f;
 
     public GameObject playerRepresentation;
     public GameObject playerFeet;
