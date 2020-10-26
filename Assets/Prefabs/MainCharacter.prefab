@@ -3230,8 +3230,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776632518021429}
-  m_LocalRotation: {x: 0.29144818, y: 0.00032386844, z: -0.00009867469, w: 0.9565866}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.2914482, y: 0.00032387135, z: -0.00009867555, w: 0.9565866}
+  m_LocalPosition: {x: 0, y: -0.0000076293945, z: 0.0000038146973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7321129237726220419}
@@ -3445,8 +3445,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776633622109588}
-  m_LocalRotation: {x: 0.27200195, y: 0.00033472668, z: -0.00009461356, w: 0.96229666}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.272002, y: 0.00033472586, z: -0.00009461334, w: 0.96229666}
+  m_LocalPosition: {x: 0, y: -0.0000076293945, z: 0.0000038146973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7321129237973921280}
@@ -3645,8 +3645,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776634437537827}
-  m_LocalRotation: {x: 0.30677783, y: 0.00033105255, z: -0.00010670477, w: 0.9517811}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.30677783, y: 0.0003310285, z: -0.00010669701, w: 0.9517811}
+  m_LocalPosition: {x: 0, y: -0.0000076293945, z: 0.0000038146973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6026776633892429112}
@@ -3721,7 +3721,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6026776634547288607}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 36.28214, z: -41.552685}
+  m_LocalPosition: {x: 0, y: 36.28214, z: -41.55268}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6026776634437537825}
@@ -6407,7 +6407,7 @@ GameObject:
   - component: {fileID: 8910306825412305897}
   m_Layer: 0
   m_Name: MainCharacter
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6477,27 +6477,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startSpeed: 4
+  currentSpeed: 0
   buildUpSpeed: 1
-  deadZone: {x: 0.08, y: 0.08}
-  running: 0
   rotationSpeed: 1.2
-  playerAnimator: {fileID: 9056800468832888026}
-  playerRepresentation: {fileID: 9056800470259969139}
   playerRotationSpeed: 0.1
   speedMultiplier: 2
   jumpForce: 5
+  rollWalkCooldown: 0.8
+  rollRunCooldown: 1.1
+  playerRepresentation: {fileID: 9056800470259969139}
   playerFeet: {fileID: 1769740775}
-  jumpCooldown: 1.5
-  dashCooldown: 3
-  dashForce: 100
-  GravityMultiplier: 12
-  CanRoll: 1
-  jumpPressed: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  rollCooldown: 2
-  PlayerCanJump: 1
+  rb: {fileID: 0}
+  playerAnimator: {fileID: 9056800468832888026}
   animationController: {fileID: 6971942048907217044}
 --- !u!114 &8991330349730270046
 MonoBehaviour:
@@ -6555,6 +6546,7 @@ MonoBehaviour:
     m_Bits: 8192
   InteractionText: {fileID: 8910306824450785196}
   actionPerformed: 0
+  Icon: {fileID: 0}
 --- !u!1 &8991330349409577935
 GameObject:
   m_ObjectHideFlags: 0

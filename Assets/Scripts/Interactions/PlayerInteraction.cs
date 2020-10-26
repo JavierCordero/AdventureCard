@@ -29,10 +29,12 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(playerEyes.transform.position, playerEyes.transform.forward, out hit, InteracionDistance, OnlyMaskToInteract))
         {
-            if (InteractionText && hit.transform.gameObject.GetComponent<InteractionInterface>() != null)
+            InteractionInterface II = hit.transform.gameObject.GetComponent<InteractionInterface>();
+
+            if (InteractionText && II != null && II.getIcon() != null)
             {
                 InteractionText.SetActive(true);
-                Icon.sprite = hit.transform.gameObject.GetComponent<InteractionInterface>().getIcon();
+                Icon.sprite = II.getIcon();
             }
 
             if(actionPerformed)
