@@ -14,6 +14,7 @@ public class State
     protected bool run = false;
     protected bool movement = false;
     protected bool roll = false;
+    protected bool attack = false;
 
     protected bool grounded = true;
 
@@ -49,6 +50,11 @@ public class State
         //playerMovement.rb.velocity = Vector2.zero;
         //layerMovement.ResetMovementValues();
         
+    }
+
+    public void AttackPressed()
+    {
+        attack = true;
     }
 
     public void JumpPressed()

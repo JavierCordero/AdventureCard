@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     public RunningState runningState;
     public WalkingState walkingState;
     public RollingState rollingState;
+    public AttackState attackState;
 
     [SerializeField]
     private PlayerAnimationController animationController;
@@ -68,10 +69,11 @@ public class PlayerMovement : MonoBehaviour
 
         //States initialization
         standingState = new StandingState(this, movementSM, animationController);
-        jumpingState = new JumpingState(this, movementSM, animationController);
+        //jumpingState = new JumpingState(this, movementSM, animationController);
         runningState = new RunningState(this, movementSM, animationController, playerInput);
         walkingState = new WalkingState(this, movementSM, animationController, playerInput);
-        rollingState = new RollingState(this, movementSM, animationController, playerInput);
+        //rollingState = new RollingState(this, movementSM, animationController, playerInput);
+        attackState = new AttackState(this, movementSM, animationController);
 
         movementSM.Initialize(standingState);
     }
@@ -90,9 +92,14 @@ public class PlayerMovement : MonoBehaviour
         movementSM.CurrentState.PhysicsUpdate();
     }
 
+    public void ActivateAttack()
+    {
+        movementSM.CurrentState.AttackPressed();
+    }
+
     public void ActiveJump()
     {
-        movementSM.CurrentState.JumpPressed();
+        //movementSM.CurrentState.JumpPressed();
     }
     public void ActiveRun(bool active)
     {
@@ -104,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void ActiveRoll()
     {
-        movementSM.CurrentState.RollPressed();
+        //movementSM.CurrentState.RollPressed();
     }
     public void EnablePlayerMovement(bool value)
     {

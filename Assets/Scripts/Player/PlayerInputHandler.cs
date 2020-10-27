@@ -46,8 +46,8 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
 
         //Player actions
-        playerInputActions.PlayerActions.PlayerTargetSelector.performed += Target_Selector_Performed;
-        playerInputActions.PlayerActions.PlayerTargetSelector.canceled += Target_Selector_Cancelled;
+        playerInputActions.PlayerActions.Attack.performed += Attack_Performed;
+        playerInputActions.PlayerActions.Attack.canceled += Attack_Cancelled;
         playerInputActions.PlayerActions.Roll.performed += Roll_Performed;
 
 
@@ -68,8 +68,8 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
 
-        playerInputActions.PlayerActions.PlayerTargetSelector.performed -= Target_Selector_Performed;
-        playerInputActions.PlayerActions.PlayerTargetSelector.canceled -= Target_Selector_Cancelled;
+        playerInputActions.PlayerActions.Attack.performed -= Attack_Performed;
+        playerInputActions.PlayerActions.Attack.canceled -= Attack_Cancelled;
 
         playerInputActions.PlayerActions.Interaction.performed -= Interaction_Performed;
 
@@ -138,16 +138,16 @@ public class PlayerInputHandler : MonoBehaviour
         //    playerMovement.dash();
     }
 
-    private void Target_Selector_Performed(InputAction.CallbackContext context)
+    private void Attack_Performed(InputAction.CallbackContext context)
     {
-        if (playerTargetSelector_)
-            playerTargetSelector_.EnableTargetSelector();
+        if (playerMovement)
+            playerMovement.ActivateAttack();
     }
 
-    private void Target_Selector_Cancelled(InputAction.CallbackContext context)
+    private void Attack_Cancelled(InputAction.CallbackContext context)
     {
-        if (playerTargetSelector_)
-            playerTargetSelector_.DisableTargetSelector();
+        //if (playerTargetSelector_)
+        //    playerTargetSelector_.DisableTargetSelector();
     }
 
     private void Roll_Performed(InputAction.CallbackContext context)

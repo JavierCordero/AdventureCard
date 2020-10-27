@@ -9,6 +9,7 @@ public class NormalZombieAttack : MonoBehaviour
     [HideInInspector] public GameObject target;
     public void ZombieAttackAnimation()
     {
+
         if (!zombieAnimator)
             zombieAnimator = GetComponent<Animator>();
 
@@ -19,7 +20,7 @@ public class NormalZombieAttack : MonoBehaviour
 
     public void ZombieAttackDamage()
     {
-        target.GetComponent<DamageObjectInterface>().Damage(5);
+        target.GetComponent<DamageObjectInterface>().Damage(5, transform.parent.GetComponent<DamagerInterface>());
     }
 
 }

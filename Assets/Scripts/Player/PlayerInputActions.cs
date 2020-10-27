@@ -837,7 +837,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
             ""id"": ""8a380a77-2907-4a0c-aa53-d29b8aa86e04"",
             ""actions"": [
                 {
-                    ""name"": ""PlayerTargetSelector"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""a0d792cb-fc0e-4a49-995c-52a8bdfc7241"",
                     ""expectedControlType"": ""Button"",
@@ -873,22 +873,22 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bd4eb172-3e8b-4646-b57a-a1d75db9459d"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""PlayerTargetSelector"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""233aded9-a960-4179-a33f-c3588820892e"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""PlayerTargetSelector"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1056,7 +1056,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         // PlayerActions
         m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
-        m_PlayerActions_PlayerTargetSelector = m_PlayerActions.FindAction("PlayerTargetSelector", throwIfNotFound: true);
+        m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
         m_PlayerActions_Roll = m_PlayerActions.FindAction("Roll", throwIfNotFound: true);
         m_PlayerActions_Interaction = m_PlayerActions.FindAction("Interaction", throwIfNotFound: true);
         m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
@@ -1279,7 +1279,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     // PlayerActions
     private readonly InputActionMap m_PlayerActions;
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
-    private readonly InputAction m_PlayerActions_PlayerTargetSelector;
+    private readonly InputAction m_PlayerActions_Attack;
     private readonly InputAction m_PlayerActions_Roll;
     private readonly InputAction m_PlayerActions_Interaction;
     private readonly InputAction m_PlayerActions_Pause;
@@ -1287,7 +1287,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @PlayerTargetSelector => m_Wrapper.m_PlayerActions_PlayerTargetSelector;
+        public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
         public InputAction @Roll => m_Wrapper.m_PlayerActions_Roll;
         public InputAction @Interaction => m_Wrapper.m_PlayerActions_Interaction;
         public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
@@ -1300,9 +1300,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
             {
-                @PlayerTargetSelector.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
-                @PlayerTargetSelector.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
-                @PlayerTargetSelector.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPlayerTargetSelector;
+                @Attack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
                 @Roll.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
                 @Roll.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
                 @Roll.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRoll;
@@ -1316,9 +1316,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @PlayerTargetSelector.started += instance.OnPlayerTargetSelector;
-                @PlayerTargetSelector.performed += instance.OnPlayerTargetSelector;
-                @PlayerTargetSelector.canceled += instance.OnPlayerTargetSelector;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
                 @Roll.started += instance.OnRoll;
                 @Roll.performed += instance.OnRoll;
                 @Roll.canceled += instance.OnRoll;
@@ -1400,7 +1400,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     }
     public interface IPlayerActionsActions
     {
-        void OnPlayerTargetSelector(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         void OnRoll(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);

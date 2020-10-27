@@ -16,7 +16,7 @@ public class WalkingState : MovingState
         base.Enter();
         movement = true;
         run = false;
-        jump = false;
+        attack = false;
         playerMovement.currentSpeed = playerMovement.startSpeed;
         playerAnimation.EnableWalk();
 
@@ -40,10 +40,13 @@ public class WalkingState : MovingState
         {
             stateMachine.ChangeState(playerMovement.runningState);
         }
-        if (jump)
-        {
-            stateMachine.ChangeState(playerMovement.jumpingState);
-        }
+        //if (jump)
+        //{
+        //    stateMachine.ChangeState(playerMovement.jumpingState);
+        //}
+
+        if (attack)
+            stateMachine.ChangeState(playerMovement.attackState);
 
     }
 

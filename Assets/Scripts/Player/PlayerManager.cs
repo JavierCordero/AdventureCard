@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
 
-    public float playerHP_;
+    public int playerHP_;
+    private int currentPlayerHP_;
     private bool playerInvencible_ = false;
     public bool readyToPlay_ = true;
 
-    public void DamagePlayer(float dmg)
+    void Start()
+    {
+        currentPlayerHP_ = playerHP_;
+    }
+
+    public void DamagePlayer(int dmg)
     {
         if (!playerInvencible_)
         {
-            playerHP_ -= dmg;
+            currentPlayerHP_ -= dmg;
 
-            if (playerHP_ <= 0)
+            if (currentPlayerHP_ <= 0)
                 KillPlayer();
         }
     }
@@ -21,6 +28,8 @@ public class PlayerManager : Singleton<PlayerManager>
     private void KillPlayer()
     {
         readyToPlay_ = false;
+        SceneManager.LoadScene("MainMenuScene");
+        currentPlayerHP_ = playerHP_;
     }
 
     public void PlayerInvencible(bool status)

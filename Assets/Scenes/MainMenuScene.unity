@@ -9038,8 +9038,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DontDestroyOnLoad: 1
-  playerHP_: 0
-  readyToPlay_: 0
+  playerHP_: 10
+  readyToPlay_: 1
 --- !u!4 &337412090
 Transform:
   m_ObjectHideFlags: 0
@@ -54377,12 +54377,12 @@ PrefabInstance:
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00033473363
+      value: 0.00033468677
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000094615534
+      value: -0.0000946023
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169200454682, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
@@ -54397,12 +54397,12 @@ PrefabInstance:
     - target: {fileID: 5728866169438314961, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00033103622
+      value: 0.00033106896
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169438314961, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0001066995
+      value: -0.00010671005
       objectReference: {fileID: 0}
     - target: {fileID: 5728866169438314961, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
@@ -54417,12 +54417,12 @@ PrefabInstance:
     - target: {fileID: 5728866170300604667, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00032388588
+      value: 0.00032385296
       objectReference: {fileID: 0}
     - target: {fileID: 5728866170300604667, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.00009867999
+      value: -0.00009866997
       objectReference: {fileID: 0}
     - target: {fileID: 5728866170300604667, guid: 7e3ea12fa6ba2eb468506bb22dfc70a8,
         type: 3}

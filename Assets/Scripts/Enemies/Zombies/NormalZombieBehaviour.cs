@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NormalZombieBehaviour : MonoBehaviour
+public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface
 {
     private GameManager gm;
     private NavMeshAgent myAgent;
-    private GameObject targetFence;
+    private GameObject target;
 
-    private bool stoppedInTargetDoor = false;
 
     public NormalZombieAttack zombieAttackBehaviour;
 
@@ -20,6 +19,8 @@ public class NormalZombieBehaviour : MonoBehaviour
 
     private GameObject player;
 
+    private bool interacted = false;
+
     private void Start()
     {
         if (!gm)
@@ -29,47 +30,52 @@ public class NormalZombieBehaviour : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
 
-        targetFence = gm.GetClosestFence(transform.position);
+        target = gm.GetClosestFence(transform.position);
         myAgent = GetComponent<NavMeshAgent>();
-        myAgent.SetDestination(targetFence.transform.GetChild(2).position);
+        myAgent.SetDestination(target.transform.GetChild(2).position);
     }
 
     private void Update()
     {
-        if (!stoppedInTargetDoor && myAgent.remainingDistance <= 0)
-        {
-            stoppedInTargetDoor = true;
-            myAgent.isStopped = true;
-
-            Attack();
-            //ZombieAttack();
-        }
-
         if (followingPlayer)
         {
-            myAgent.isStopped = false;
             myAgent.SetDestination(player.transform.position);
         }
 
     }
 
-   private void Attack()
+    private void Attack()
     {
-        if (zombieAttackBehaviour)
+        if (zombieAttackBehaviour && target)
         {
             zombieAnimator.SetFloat("Walk", 0f);
-            zombieAttackBehaviour.target = targetFence;
+            zombieAttackBehaviour.target = target;
             zombieAttackBehaviour.ZombieAttackAnimation();
         }
-
-        if (targetFence.GetComponent<FenceBehaviour>().currentFenceHP > 0)
-            Invoke("Attack", 2.5f);
-        else
-        {
-            followingPlayer = true;
-            zombieAnimator.SetFloat("Walk", 0.2f);
-        }
-
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (!interacted && other.gameObject.GetComponent<DamageObjectInterface>() != null)
+        {
+            target = other.gameObject;
+            interacted = true;
+            Attack();
+            Invoke("StopInteraction", 2.5f);
+        }
+    }
+
+    private void StopInteraction()
+    {
+        interacted = false;
+    }
+
+    void DamagerInterface.StopAttacking()
+    {
+        target = null;
+        StopInteraction();
+        followingPlayer = true;
+        myAgent.isStopped = false;
+        zombieAnimator.SetFloat("Walk", 0.2f);
+    }
 }

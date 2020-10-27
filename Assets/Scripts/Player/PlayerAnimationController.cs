@@ -85,6 +85,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void EnableAtack(int index)
     {
         anim.SetInteger("Atack", index);
+        anim.SetTrigger("AttackTrigger");
     }
 
     public void StartGame()

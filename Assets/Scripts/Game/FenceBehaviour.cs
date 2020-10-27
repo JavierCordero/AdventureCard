@@ -5,7 +5,7 @@ using UnityEngine.AI;
 public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectInterface
 {
     [SerializeField] private int fenceHP = 10;
-    public int currentFenceHP;
+    private int currentFenceHP;
 
     private GameObject brokenFence, normalFence;
 
@@ -23,7 +23,7 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
         myCollider = GetComponent<Collider>();
     }
 
-    public void FenceDamage(int dmg)
+    public void FenceDamage(int dmg, DamagerInterface Damager)
     {
         currentFenceHP -= dmg;
 
@@ -33,7 +33,16 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
             brokenFence.SetActive(true);
             myNavMesh.enabled = false;
             myCollider.isTrigger = true;
+            myCollider.enabled = false;
+            if(Damager != null)
+                Damager.StopAttacking();
+            Invoke("restoreCollider", 10);
         }
+    }
+
+    private void restoreCollider()
+    {
+        myCollider.enabled = true;
     }
 
     public void RestoreFence()
@@ -59,8 +68,8 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
         Debug.Log("Repairing");
     }
 
-    public void Damage(int dmg)
+    public void Damage(int dmg, DamagerInterface damager)
     {
-        FenceDamage(dmg);
+        FenceDamage(dmg, damager);
     }
 }

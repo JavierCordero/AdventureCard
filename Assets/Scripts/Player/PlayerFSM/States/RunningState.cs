@@ -13,10 +13,9 @@ public class RunningState : MovingState
     public override void Enter()
     {
         base.Enter();
-        movement = true;
+        movement = false;
         run = true;
-        jump = false;
-        roll = false;
+        attack = false;
         playerMovement.currentSpeed = playerMovement.startSpeed * playerMovement.speedMultiplier;
         playerAnimation.EnableRun();
         
@@ -41,18 +40,21 @@ public class RunningState : MovingState
             stateMachine.ChangeState(playerMovement.walkingState);
             return;
         }
-        if (jump)
-        {
-            stateMachine.ChangeState(playerMovement.jumpingState);
-            return;
-        }
+        //if (jump)
+        //{
+        //    stateMachine.ChangeState(playerMovement.jumpingState);
+        //    return;
+        //}
 
-        if (roll)
-        {
-            stateMachine.ChangeState(playerMovement.rollingState);
-            return;
-        }
-        
+        //if (roll)
+        //{
+        //    stateMachine.ChangeState(playerMovement.rollingState);
+        //    return;
+        //}
+
+        if (attack)
+            stateMachine.ChangeState(playerMovement.attackState);
+
     }
 
     public override void PhysicsUpdate()
