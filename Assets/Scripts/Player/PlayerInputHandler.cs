@@ -9,7 +9,15 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 movementInput { get; protected set; }
     public Vector2 aimInput { get; protected set; }
 
-    public bool running { get; protected set; }
+    //public bool running { get; protected set; }
+
+    public bool jump = false;
+    public bool run = false;
+    public bool movement = false;
+    public bool roll = false;
+    public bool attack = false;
+    public bool block = false;
+
 
     public GameObject PauseCanvas;
 
@@ -44,6 +52,7 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Run.started += Run_Performed;
         playerInputActions.PlayerControls.Run.canceled += Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed += Jump_Performed;
+        playerInputActions.PlayerControls.Block.performed += Block_Performed;
 
         //Player actions
         playerInputActions.PlayerActions.Attack.performed += Attack_Performed;
@@ -67,6 +76,8 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputActions.PlayerControls.Run.started -= Run_Performed;
         playerInputActions.PlayerControls.Run.canceled -= Run_Cancelled;
         playerInputActions.PlayerControls.Jump.performed -= Jump_Performed;
+        playerInputActions.PlayerControls.Block.performed -= Block_Performed;
+
 
         playerInputActions.PlayerActions.Attack.performed -= Attack_Performed;
         playerInputActions.PlayerActions.Attack.canceled -= Attack_Cancelled;
@@ -87,14 +98,14 @@ public class PlayerInputHandler : MonoBehaviour
         if (PauseCanvas)
         {
             PauseCanvas.SetActive(!PauseCanvas.activeSelf);
-            if(PauseCanvas.activeSelf)
+            if (PauseCanvas.activeSelf)
             {
                 Time.timeScale = 0;
                 playerMovement.EnablePlayerMovement(false);
             }
 
             else
-            {   
+            {
                 Time.timeScale = 1;
                 playerMovement.EnablePlayerMovement(true);
             }
@@ -105,31 +116,39 @@ public class PlayerInputHandler : MonoBehaviour
     private void Move_Performed(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
-        playerMovement.ActiveWalk(true);
+        movement = true;
+       // playerMovement.ActiveWalk(true);
+    } 
+    private void Block_Performed(InputAction.CallbackContext context)
+    {
+        block = true;
     }
     private void Move_Cancelled(InputAction.CallbackContext context)
     {
 
         movementInput = Vector2.zero;
-        playerMovement.ActiveWalk(false);
+        movement = false;
+      //  playerMovement.ActiveWalk(false);
     }
 
     private void Run_Performed(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.ActiveRun(true);
+        run = true;
+        //if (playerMovement)
+        //    playerMovement.ActiveRun(true);
     }
 
     private void Run_Cancelled(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.ActiveRun(false);
+        run = false;
+        //if (playerMovement)
+        //    playerMovement.ActiveRun(false);
     }
 
     private void Jump_Performed(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.ActiveJump();
+        //if (playerMovement)
+        //    playerMovement.ActiveJump();
     }
 
     private void Dash_Performed(InputAction.CallbackContext context)
@@ -140,20 +159,22 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Attack_Performed(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.ActivateAttack();
+        attack = true;
+        //if (playerMovement)
+        //    playerMovement.ActivateAttack(true);
     }
 
     private void Attack_Cancelled(InputAction.CallbackContext context)
     {
+        //attack = false;
         //if (playerTargetSelector_)
         //    playerTargetSelector_.DisableTargetSelector();
     }
 
     private void Roll_Performed(InputAction.CallbackContext context)
     {
-        if (playerMovement)
-            playerMovement.ActiveRoll();
+        //if (playerMovement)
+        //    playerMovement.ActiveRoll();
     }
 
     private void Interaction_Performed(InputAction.CallbackContext context)

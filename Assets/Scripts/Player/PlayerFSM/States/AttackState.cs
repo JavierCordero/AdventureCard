@@ -4,48 +4,32 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    public AttackState(PlayerMovement p_playerMovement, StateMachine p_stateMachine, PlayerAnimationController p_playerAnimation)
-       : base(p_playerMovement, p_stateMachine, p_playerAnimation)
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        GetComponents(animator.gameObject);
     }
 
-    public override void Enter()
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!attack)
-        {
-            base.Enter();
-            movement = false;
-            run = false;
-            attack = true;
-            playerAnimation.EnableAtack(Random.Range(0, 3) + 1);
-        }
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-        attack = false;
-    }
-
-    public override void HandleInput()
-    {
-        base.HandleInput();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        if (movement && !run)
-            stateMachine.ChangeState(playerMovement.walkingState);
-        else if (movement && run)
-            stateMachine.ChangeState(playerMovement.runningState);
+        playerInput.attack = false;
 
     }
 
-    public override void PhysicsUpdate()
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.PhysicsUpdate();
 
-       
+     
+
     }
+
+    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        Debug.Log("On Attack Move ");
+    }
+
+    override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        Debug.Log("On Attack IK ");
+    }
+
 }

@@ -1,59 +1,46 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class WalkingState : MovingState
+public class WalkingState : State
 {
 
-
-    public WalkingState(PlayerMovement p_playerMovement, StateMachine p_stateMachine, PlayerAnimationController p_playerAnimation, PlayerInputHandler p_playerInput)
-        : base(p_playerMovement, p_stateMachine, p_playerAnimation, p_playerInput)
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-    }
+        GetComponents(animator.gameObject);
 
-    public override void Enter()
-    {
-        base.Enter();
-        movement = true;
-        run = false;
-        attack = false;
         playerMovement.currentSpeed = playerMovement.startSpeed;
-        playerAnimation.EnableWalk();
+    }
+
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
 
     }
 
-    public override void Exit()
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.Exit();
-        movement = false;
-    }
-
-    public override void HandleInput()
-    {
-        base.HandleInput();
-    }
-
-    public override void LogicUpdate()
-    {
-        base.LogicUpdate();
-        if(movement && run)
+        Move();
+        
+        if(playerInput.run)
         {
-            stateMachine.ChangeState(playerMovement.runningState);
+            playerAnimation.EnableRun();
+            return;
         }
-        //if (jump)
-        //{
-        //    stateMachine.ChangeState(playerMovement.jumpingState);
-        //}
-
-        if (attack)
-            stateMachine.ChangeState(playerMovement.attackState);
-
+        if (playerInput.attack)
+        {
+            playerAnimation.EnableAtack(Random.Range(0, 3) + 1);
+            return;
+        }
+        if (playerInput.block)
+        {
+            playerAnimation.lastMove = "Walk";
+            playerAnimation.EnableBlock();
+            return;
+        }
     }
 
-    public override void PhysicsUpdate()
+    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.PhysicsUpdate();
-       
-
+        
     }
+
+
 }

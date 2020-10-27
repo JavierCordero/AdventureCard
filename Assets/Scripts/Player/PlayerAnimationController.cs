@@ -5,7 +5,9 @@ using UnityEngine.SceneManagement;
 public class PlayerAnimationController : MonoBehaviour
 {
     Animator anim;
-    public PlayerMovement player; 
+    public PlayerMovement player;
+    public string lastMove = "";
+
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -18,6 +20,7 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", false);
+        anim.SetBool("Block", false);
 
     }
 
@@ -49,6 +52,7 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", false);
+        anim.SetBool("Block", false);
 
     }
 
@@ -59,6 +63,7 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", false);
         anim.SetBool("Run", false);
+        anim.SetBool("Block", false);
 
     }
 
@@ -69,6 +74,9 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Idle", false);
         anim.SetBool("Roll", false);
         anim.SetBool("Jump", false);
+        anim.SetBool("AttackTrigger", false);
+        anim.SetBool("Block", false);
+
 
     }
 
@@ -81,16 +89,38 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Jump", true);
 
     }
+    public void EnableBlock()
+    {
+        
+        anim.SetBool("Block", true);
+
+    }
 
     public void EnableAtack(int index)
     {
         anim.SetInteger("Atack", index);
-        anim.SetTrigger("AttackTrigger");
+        anim.SetBool("AttackTrigger", true);
     }
 
     public void StartGame()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void AtackFinished()
+    {
+        anim.SetBool("AttackTrigger", false);
+        
+        
+    }
+    public void BlockFinished()
+    {
+        anim.SetBool("Block", false);
+        player.playerInput.block = false;
+        if (lastMove == "Walk")
+            EnableWalk();
+        else if (lastMove == "Run")
+            EnableRun();
     }
 
 }

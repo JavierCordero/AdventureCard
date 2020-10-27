@@ -1,15 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class RunningState : State
+public class IdleState : State
 {
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         GetComponents(animator.gameObject);
-
-        playerMovement.currentSpeed = playerMovement.startSpeed * playerMovement.speedMultiplier;
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,9 +18,8 @@ public class RunningState : State
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Move();
 
-        if (!playerInput.run)
+        if (playerInput.movementInput != Vector2.zero)
         {
             playerAnimation.EnableWalk();
             return;
@@ -33,22 +31,21 @@ public class RunningState : State
         }
         if (playerInput.block)
         {
-            playerAnimation.lastMove = "Run";
             playerAnimation.EnableBlock();
             return;
         }
-
     }
 
     override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-      
     }
 
     override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
     }
 
-   
+
+
+    
+
 }

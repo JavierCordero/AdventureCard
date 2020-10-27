@@ -4,74 +4,53 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class State
+public class State : StateMachineBehaviour
 {
-    public PlayerMovement playerMovement;
-    public StateMachine stateMachine;
-    public PlayerAnimationController playerAnimation;
+    protected PlayerMovement playerMovement;
+    protected PlayerAnimationController playerAnimation;
+    protected PlayerInputHandler playerInput;
 
-    protected bool jump = false;
-    protected bool run = false;
-    protected bool movement = false;
-    protected bool roll = false;
-    protected bool attack = false;
+    private Vector2 newMovementInput;
+    private Vector2 movementInput;
+    private Vector3 heading;
+    private Vector3 rotationLookVector;
 
-    protected bool grounded = true;
-
-    protected float fallMultiplier = 2.5f;
-    protected float lowJumpMultiplier = 2f;
-
-
-    public State(PlayerMovement p_playerMovement, StateMachine p_stateMachine, PlayerAnimationController p_playerAnimation)
+    protected void GetComponents(GameObject go)
     {
-        playerMovement = p_playerMovement;
-        stateMachine = p_stateMachine;
-        playerAnimation = p_playerAnimation;
-    }
-    public virtual void Enter()
-    {
+        if(!playerMovement)
+             playerMovement = go.GetComponentInParent<PlayerMovement>();
+        if (!playerAnimation)
+            playerAnimation = go.GetComponentInParent<PlayerAnimationController>();
+        if (!playerInput)
+            playerInput = go.GetComponentInParent<PlayerInputHandler>();
 
     }
-    public virtual void HandleInput()
+    protected void Move()
     {
+        if (playerMovement.playerCanMove)
+        {
+            newMovementInput = playerInput.movementInput;
 
-    }
-    public virtual void LogicUpdate()
-    {
-        //Debug.Log(String.Format("Jump: {0}, Run: {1}, Movement: {2}, Roll: {3}", jump, run, movement, roll));
-    }
-    public virtual void PhysicsUpdate()
-    {
+            if (newMovementInput == Vector2.zero)
+            {
+                playerAnimation.EnableIdle();
+            }
 
-    }
-    public virtual void Exit()
-    {
-        playerMovement.GetPlayerAnimationController().DisableAll();
-        //playerMovement.rb.velocity = Vector2.zero;
-        //layerMovement.ResetMovementValues();
-        
-    }
+            float realBuildUpSpeed = 1f - Mathf.Pow(1f - playerMovement.buildUpSpeed, Time.deltaTime * 60);
+            movementInput = Vector2.Lerp(movementInput, newMovementInput, realBuildUpSpeed);
 
-    public void AttackPressed()
-    {
-        attack = true;
-    }
+            heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
+                   Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
 
-    public void JumpPressed()
-    {
-        jump = true;
-    }
-    public void RunPressed(bool pressed)
-    {
-        run = pressed;
-    }
-    public void MovePressed(bool p)
-    {
-        movement = p;
-    }
-    public void RollPressed()
-    {
-        roll = true;
+
+            rotationLookVector.x = heading.x;
+            rotationLookVector.z = heading.z;
+
+            playerMovement.playerRepresentation.transform.rotation = Quaternion.Lerp(playerMovement.playerRepresentation.transform.rotation,
+                Quaternion.LookRotation(rotationLookVector, Vector3.up), playerMovement.playerRotationSpeed);
+
+            playerMovement.rb.velocity = new Vector3(heading.x * playerMovement.currentSpeed, playerMovement.rb.velocity.y, heading.z * playerMovement.currentSpeed);
+        }
     }
 
 }
