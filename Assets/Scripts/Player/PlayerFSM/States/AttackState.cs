@@ -18,7 +18,7 @@ public class AttackState : State
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
-     
+        Debug.Log("Attack");
 
     }
 

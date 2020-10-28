@@ -18,7 +18,6 @@ public class IdleState : State
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
         if (playerInput.movementInput != Vector2.zero)
         {
             playerAnimation.EnableWalk();
@@ -26,11 +25,13 @@ public class IdleState : State
         }
         if (playerInput.attack)
         {
+            playerInput.attack = false;
             playerAnimation.EnableAtack(Random.Range(0, 3) + 1);
             return;
         }
         if (playerInput.block)
         {
+            playerInput.block = false;
             playerAnimation.EnableBlock();
             return;
         }

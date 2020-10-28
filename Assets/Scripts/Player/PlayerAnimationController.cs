@@ -7,7 +7,7 @@ public class PlayerAnimationController : MonoBehaviour
     Animator anim;
     public PlayerMovement player;
     public string lastMove = "";
-
+    public GameObject sword;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -18,9 +18,9 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Run", true);
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
-        anim.SetBool("Roll", false);
-        anim.SetBool("Jump", false);
-        anim.SetBool("Block", false);
+        //anim.SetBool("Roll", false);
+        //anim.SetBool("Jump", false);
+        //anim.SetBool("Block", false);
 
     }
 
@@ -29,9 +29,9 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Run", false);
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
-        anim.SetBool("Roll", false);
+        //anim.SetBool("Roll", false);
         anim.SetBool("StartGame", true);
-        anim.SetBool("Jump", false);
+        //anim.SetBool("Jump", false);
 
     }
 
@@ -40,8 +40,8 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Run", false);
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
-        anim.SetBool("Roll", true);
-        anim.SetBool("Jump", false);
+       //anim.SetBool("Roll", true);
+       //anim.SetBool("Jump", false);
 
     }
 
@@ -50,9 +50,9 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Run", false);
         anim.SetBool("Walk", true);
         anim.SetBool("Idle", false);
-        anim.SetBool("Roll", false);
-        anim.SetBool("Jump", false);
-        anim.SetBool("Block", false);
+        //anim.SetBool("Roll", false);
+        //anim.SetBool("Jump", false);
+        //anim.SetBool("Block", false);
 
     }
 
@@ -60,10 +60,10 @@ public class PlayerAnimationController : MonoBehaviour
     {
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", true);
-        anim.SetBool("Roll", false);
-        anim.SetBool("Jump", false);
+        //anim.SetBool("Roll", false);
+        //anim.SetBool("Jump", false);
         anim.SetBool("Run", false);
-        anim.SetBool("Block", false);
+        //anim.SetBool("Block", false);
 
     }
 
@@ -72,34 +72,38 @@ public class PlayerAnimationController : MonoBehaviour
         anim.SetBool("Run", false);
         anim.SetBool("Walk", false);
         anim.SetBool("Idle", false);
-        anim.SetBool("Roll", false);
-        anim.SetBool("Jump", false);
-        anim.SetBool("AttackTrigger", false);
-        anim.SetBool("Block", false);
+        //anim.SetBool("Roll", false);
+        //anim.SetBool("Jump", false);
+        //anim.SetBool("AttackTrigger", false);
+        //anim.SetBool("Block", false);
 
 
     }
 
-    public void EnableJump()
-    {
-        anim.SetBool("Run", false);
-        anim.SetBool("Walk", false);
-        anim.SetBool("Idle", false);
-        anim.SetBool("Roll", false);
-        anim.SetBool("Jump", true);
+    //public void EnableJump()
+    //{
+    //    anim.SetBool("Run", false);
+    //    anim.SetBool("Walk", false);
+    //    anim.SetBool("Idle", false);
+    //    anim.SetBool("Roll", false);
+    //    anim.SetBool("Jump", true);
 
-    }
+    //}
     public void EnableBlock()
-    {
-        
-        anim.SetBool("Block", true);
-
+    {   
+        anim.SetTrigger("Block");
+        player.playerCanMove = false;
     }
 
-    public void EnableAtack(int index)
+    public void EnableAtack(float index)
     {
-        anim.SetInteger("Atack", index);
-        anim.SetBool("AttackTrigger", true);
+        if (!sword.activeSelf)
+        {
+            player.playerCanMove = false;
+            anim.SetFloat("Atack", index);
+            anim.SetTrigger("AttackTrigger");
+            sword.SetActive(true);
+        }
     }
 
     public void StartGame()
@@ -109,18 +113,18 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void AtackFinished()
     {
-        anim.SetBool("AttackTrigger", false);
-        
-        
+        player.playerCanMove = true;
+        sword.SetActive(false);
     }
     public void BlockFinished()
     {
-        anim.SetBool("Block", false);
+        player.playerCanMove = true;
+        //anim.SetBool("Block", false);
         player.playerInput.block = false;
-        if (lastMove == "Walk")
-            EnableWalk();
-        else if (lastMove == "Run")
-            EnableRun();
+        //if (lastMove == "Walk")
+        //    EnableWalk();
+        //else if (lastMove == "Run")
+        //    EnableRun();
     }
 
 }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface
+public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObjectInterface
 {
     private GameManager gm;
     private NavMeshAgent myAgent;
     private GameObject target;
-
+    public int Health = 20;
 
     public NormalZombieAttack zombieAttackBehaviour;
 
@@ -32,7 +32,13 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface
 
         target = gm.GetClosestFence(transform.position);
         myAgent = GetComponent<NavMeshAgent>();
-        myAgent.SetDestination(target.transform.GetChild(2).position);
+
+        if (target)
+        {
+            myAgent.SetDestination(target.transform.GetChild(2).position);
+        }
+
+        else followingPlayer = true;
     }
 
     private void Update()
@@ -77,5 +83,16 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface
         followingPlayer = true;
         myAgent.isStopped = false;
         zombieAnimator.SetFloat("Walk", 0.2f);
+    }
+
+    public void Damage(int dmg, DamagerInterface Damager = null)
+    {
+        Health -= dmg;
+
+        if (Health <= 0)
+        {
+            gm.KillEnemy();
+            Destroy(gameObject);
+        }
     }
 }

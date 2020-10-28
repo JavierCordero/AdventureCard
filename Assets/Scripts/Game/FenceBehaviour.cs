@@ -14,6 +14,8 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
     private NavMeshObstacle myNavMesh;
     private Collider myCollider;
 
+    private GameManager gm;
+
     private void Start()
     {
         currentFenceHP = fenceHP;
@@ -21,6 +23,7 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
         brokenFence = transform.GetChild(1).gameObject;
         myNavMesh = GetComponent<NavMeshObstacle>();
         myCollider = GetComponent<Collider>();
+        gm = FindObjectOfType<GameManager>();
     }
 
     public void FenceDamage(int dmg, DamagerInterface Damager)
@@ -49,10 +52,12 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
     {
         if (currentFenceHP <= 0)
         {
+            currentFenceHP = fenceHP;
             normalFence.SetActive(true);
             brokenFence.SetActive(false);
             myNavMesh.enabled = true;
             myCollider.isTrigger = false;
+            gm.AddFence(gameObject);
         }
     }
 
@@ -65,7 +70,11 @@ public class FenceBehaviour : MonoBehaviour, InteractionInterface, DamageObjectI
 
     public void ActionPerformed()
     {
-        Debug.Log("Repairing");
+        if (gm.numberOfWood > 0)
+        {
+            RestoreFence();
+            gm.destroyWood();
+        }
     }
 
     public void Damage(int dmg, DamagerInterface damager)

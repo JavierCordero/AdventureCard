@@ -51,6 +51,8 @@ public class State : StateMachineBehaviour
 
             playerMovement.rb.velocity = new Vector3(heading.x * playerMovement.currentSpeed, playerMovement.rb.velocity.y, heading.z * playerMovement.currentSpeed);
         }
+
+        else playerMovement.rb.velocity = Vector3.zero;
     }
 
 }

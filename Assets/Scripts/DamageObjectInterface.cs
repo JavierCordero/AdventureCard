@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface DamageObjectInterface
 {
-    void Damage(int dmg, DamagerInterface Damager);
+    void Damage(int dmg, DamagerInterface Damager = null);
 }

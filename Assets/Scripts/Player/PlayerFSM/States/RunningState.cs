@@ -28,13 +28,16 @@ public class RunningState : State
         }
         if (playerInput.attack)
         {
+            playerInput.attack = false;
             playerAnimation.EnableAtack(Random.Range(0, 3) + 1);
             return;
         }
         if (playerInput.block)
         {
+            playerInput.block = false;
             playerAnimation.lastMove = "Run";
             playerAnimation.EnableBlock();
+
             return;
         }
 

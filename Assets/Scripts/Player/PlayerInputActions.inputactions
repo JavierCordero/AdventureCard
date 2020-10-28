@@ -322,10 +322,21 @@
                 {
                     "name": "",
                     "id": "c63c37f1-3dc5-45f9-9d74-28a4c7bf52fa",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f4e701a7-fdb0-4ee6-a0e6-c89f4f5f3f17",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Block",
                     "isComposite": false,
                     "isPartOfComposite": false

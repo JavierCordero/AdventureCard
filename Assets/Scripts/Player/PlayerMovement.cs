@@ -7,14 +7,14 @@ public class PlayerMovement : MonoBehaviour
 {
 
     //Speeds
-    [HideInInspector] 
+    [HideInInspector]
     public float startSpeed;
-  
+
     [HideInInspector]
     public float currentSpeed;
 
-    [Range(0f, 1f)] 
-    [SerializeField] 
+    [Range(0f, 1f)]
+    [SerializeField]
     public float buildUpSpeed;
 
     public float rotationSpeed = 1.2f;
@@ -52,11 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-       rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInputHandler>();
         FindObjectOfType<GeneralAnimationManager>().FadeOut();
 
-   }
+    }
 
     public void EnablePlayerMovement(bool value)
     {

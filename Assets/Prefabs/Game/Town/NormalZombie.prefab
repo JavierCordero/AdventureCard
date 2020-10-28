@@ -1636,6 +1636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b39f140f421b72545a252ec1538a6bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Health: 30
   zombieAttackBehaviour: {fileID: 1134640282}
   zombieAnimator: {fileID: 6177819473083435232}
 --- !u!195 &302349989
