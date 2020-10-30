@@ -21,6 +21,8 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private bool interacted = false;
 
+    private bool death = false; //Tecnicamente un zombie ya está muerto de base pero bueno, ya me entendéis
+
     private void Start()
     {
         if (!gm)
@@ -43,7 +45,7 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private void Update()
     {
-        if (followingPlayer)
+        if (followingPlayer && myAgent)
         {
             myAgent.SetDestination(player.transform.position);
         }
@@ -52,7 +54,7 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private void Attack()
     {
-        if (zombieAttackBehaviour && target)
+        if (!death && zombieAttackBehaviour && target)
         {
             zombieAnimator.SetFloat("Walk", 0f);
             zombieAttackBehaviour.target = target;
@@ -62,7 +64,7 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private void OnTriggerStay(Collider other)
     {
-        if (!interacted && other.gameObject.GetComponent<DamageObjectInterface>() != null)
+        if (!death && !interacted && other.gameObject.GetComponent<DamageObjectInterface>() != null)
         {
             target = other.gameObject;
             interacted = true;
@@ -91,8 +93,15 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
         if (Health <= 0)
         {
+            death = true;
             gm.KillEnemy();
-            Destroy(gameObject);
+            zombieAnimator.SetFloat("Death", Random.Range(0, 2));
+            zombieAnimator.SetTrigger("Kill");
+            Destroy(myAgent);
+        }
+        else
+        {
+            zombieAnimator.SetTrigger("Stunt");
         }
     }
 }

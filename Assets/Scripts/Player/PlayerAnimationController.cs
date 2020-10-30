@@ -113,6 +113,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void AtackFinished()
     {
+        Debug.Log("Me cago en los muertos de dios");
         player.playerCanMove = true;
         sword.SetActive(false);
     }
