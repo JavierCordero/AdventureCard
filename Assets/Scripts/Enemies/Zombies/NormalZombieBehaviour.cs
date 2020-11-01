@@ -7,7 +7,8 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 {
     private GameManager gm;
     private NavMeshAgent myAgent;
-    private GameObject target;
+    [HideInInspector]
+    public GameObject target;
     public int Health = 20;
 
     public NormalZombieAttack zombieAttackBehaviour;
@@ -23,6 +24,7 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private bool death = false; //Tecnicamente un zombie ya está muerto de base pero bueno, ya me entendéis
 
+    private bool stunt = false, canMove = true;
     private void Start()
     {
         if (!gm)
@@ -45,9 +47,14 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     private void Update()
     {
-        if (followingPlayer && myAgent)
+        if (canMove && myAgent)
         {
-            myAgent.SetDestination(player.transform.position);
+            if (followingPlayer)
+            {
+                myAgent.SetDestination(player.transform.position);
+            }
+
+            else myAgent.SetDestination(target.transform.GetChild(2).position);
         }
 
     }
@@ -57,7 +64,6 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
         if (!death && zombieAttackBehaviour && target)
         {
             zombieAnimator.SetFloat("Walk", 0f);
-            zombieAttackBehaviour.target = target;
             zombieAttackBehaviour.ZombieAttackAnimation();
         }
     }
@@ -73,6 +79,12 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (target == other)
+            target = null;
+    }
+
     private void StopInteraction()
     {
         interacted = false;
@@ -84,12 +96,16 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
         StopInteraction();
         followingPlayer = true;
         myAgent.isStopped = false;
+        SetZombieMovement(true);
         zombieAnimator.SetFloat("Walk", 0.2f);
     }
 
     public void Damage(int dmg, DamagerInterface Damager = null)
     {
         Health -= dmg;
+
+        if (!followingPlayer)
+            followingPlayer = true;
 
         if (Health <= 0)
         {
@@ -99,9 +115,27 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
             zombieAnimator.SetTrigger("Kill");
             Destroy(myAgent);
         }
-        else
+        else if(!stunt)
         {
+            SetZombieMovement(false);
+            stunt = true;
             zombieAnimator.SetTrigger("Stunt");
         }
     }
+
+    public void stopZombieStunt()
+    {
+        SetZombieMovement(true);
+        stunt = false;
+    }
+
+    public void SetZombieMovement(bool m)
+    {
+        if (!m)
+            myAgent.isStopped = true;
+        else myAgent.isStopped = false;
+
+        canMove = m;
+    }
+
 }
