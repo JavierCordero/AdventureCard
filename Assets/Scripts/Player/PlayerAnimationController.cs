@@ -35,16 +35,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     }
 
-    public void Roll()
-    {
-        anim.SetBool("Run", false);
-        anim.SetBool("Walk", false);
-        anim.SetBool("Idle", false);
-       //anim.SetBool("Roll", true);
-       //anim.SetBool("Jump", false);
-
-    }
-
     public void EnableWalk()
     {
         anim.SetBool("Run", false);
@@ -80,15 +70,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     }
 
-    //public void EnableJump()
-    //{
-    //    anim.SetBool("Run", false);
-    //    anim.SetBool("Walk", false);
-    //    anim.SetBool("Idle", false);
-    //    anim.SetBool("Roll", false);
-    //    anim.SetBool("Jump", true);
-
-    //}
     public void EnableBlock()
     {   
         anim.SetTrigger("Block");
@@ -99,7 +80,7 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (!sword.activeSelf)
         {
-            player.DisablePlayerMovement();
+            //player.DisablePlayerMovement();
             anim.SetFloat("Atack", index);
             anim.SetTrigger("AttackTrigger");
             sword.SetActive(true);

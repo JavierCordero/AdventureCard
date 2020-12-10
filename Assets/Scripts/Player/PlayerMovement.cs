@@ -34,15 +34,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool playerCanMove_ = true;
 
-    private bool playerRolling_ = false;
-
-    private Vector2 playerRollDirection;
-
-    public bool CanRoll = true;
-
-    [SerializeField]
-    private float rollCooldown = 2;
-
     [SerializeField]
     private PlayerAnimationController animationController;
     void Awake()
@@ -65,12 +56,6 @@ public class PlayerMovement : MonoBehaviour
         if (playerCanMove_)
         {
             newMovementInput = playerInput.movementInput;
-
-            if (playerRolling_)
-            {
-                newMovementInput = playerRollDirection;
-                currentSpeed = startSpeed * speedMultiplier;
-            }
 
             if (playerInput.movementInput == Vector2.zero)
             {
@@ -105,8 +90,6 @@ public class PlayerMovement : MonoBehaviour
 
                 currentSpeed = startSpeed;
             }
-
-
         }
 
         else
@@ -115,6 +98,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(playerInput.attack)
+        {
+            animationController.EnableAtack(1);
+        }
+    }
     private void SetIdlePlayer()
     {
         rb.velocity = Vector3.zero;

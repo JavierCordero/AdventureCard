@@ -11,10 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     //public bool running { get; protected set; }
 
-    public bool jump = false;
     public bool run = false;
     public bool movement = false;
-    public bool roll = false;
     public bool attack = false;
     public bool block = false;
 

@@ -75811,27 +75811,27 @@ PrefabInstance:
     - target: {fileID: 1825474032970130976, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000076293945
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1825474033308658667, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00033099102
+      value: 0.0003310194
       objectReference: {fileID: 0}
     - target: {fileID: 1825474033308658667, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000106684965
+      value: -0.00010669411
       objectReference: {fileID: 0}
     - target: {fileID: 1825474033308658667, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000076293945
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1825474033308658667, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.3067779
+      value: 0.30677792
       objectReference: {fileID: 0}
     - target: {fileID: 1825474033308658667, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
@@ -75861,7 +75861,7 @@ PrefabInstance:
     - target: {fileID: 1825474034072382145, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0000076293945
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8991330349409155053, guid: 78faabe073200a44a90bd867f6353e71,
         type: 3}
@@ -75923,7 +75923,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCharacter
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1274520352220029493, guid: 78faabe073200a44a90bd867f6353e71, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 78faabe073200a44a90bd867f6353e71, type: 3}
 --- !u!33 &3469287836532268295
 MeshFilter:
