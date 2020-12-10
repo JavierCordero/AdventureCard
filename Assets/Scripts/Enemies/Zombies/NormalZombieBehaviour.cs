@@ -102,24 +102,27 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     public void Damage(int dmg, DamagerInterface Damager = null)
     {
-        Health -= dmg;
-
-        if (!followingPlayer)
-            followingPlayer = true;
-
-        if (Health <= 0)
+        if (!death)
         {
-            death = true;
-            gm.KillEnemy();
-            zombieAnimator.SetFloat("Death", Random.Range(0, 2));
-            zombieAnimator.SetTrigger("Kill");
-            Destroy(myAgent);
-        }
-        else if(!stunt)
-        {
-            SetZombieMovement(false);
-            stunt = true;
-            zombieAnimator.SetTrigger("Stunt");
+            Health -= dmg;
+
+            if (!followingPlayer)
+                followingPlayer = true;
+
+            if (Health <= 0)
+            {
+                death = true;
+                gm.KillEnemy();
+                zombieAnimator.SetFloat("Death", Random.Range(0, 2));
+                zombieAnimator.SetTrigger("Kill");
+                Destroy(myAgent);
+            }
+            else if (!stunt)
+            {
+                SetZombieMovement(false);
+                stunt = true;
+                zombieAnimator.SetTrigger("Stunt");
+            }
         }
     }
 
@@ -131,10 +134,12 @@ public class NormalZombieBehaviour : MonoBehaviour, DamagerInterface, DamageObje
 
     public void SetZombieMovement(bool m)
     {
-        if (!m)
-            myAgent.isStopped = true;
-        else myAgent.isStopped = false;
-
+        if (myAgent)
+        {
+            if (!m)
+                myAgent.isStopped = true;
+            else myAgent.isStopped = false;
+        }
         canMove = m;
     }
 

@@ -18,9 +18,15 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public int numberOfWood = 0;
+    private int origMaxNumberWood = 3;
     public int maxNumberOfWood = 3;
 
     public UnityEngine.UI.Text numberOfWoodText;
+
+    public enum PowerUps { BACKPACK = 0, SHIELD = 1};
+    public GameObject BackPack, Shield;
+    [HideInInspector]
+    public bool ShieldEnabled = false;
 
     public bool addWood()
     {
@@ -61,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdateCanvas()
     {
-        numberOfWoodText.text = "x" + numberOfWood.ToString();
+        numberOfWoodText.text = numberOfWood.ToString() + "/" + maxNumberOfWood;
     }
 
     private void NextLevel()
@@ -86,6 +92,16 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void increaseMaxNumberWood(int max)
+    {
+        maxNumberOfWood = max;
+    }
+
+    public void restoreMaxNumberWood()
+    {
+        maxNumberOfWood = origMaxNumberWood;
+    }
+
     //private void dep()
     //{
     //    Debug.Log("Level: " + currentLevel + " NumEnemiesThisLevel: " + numEnemies + " EnemiesLeft: " + enemiesLeftToCompleteLevel);
@@ -105,7 +121,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentSceneEnemies < maxSceneEnemies && totalCreatedEnemies < numEnemies)
         {
-            createEnemies();     
+            createEnemies();
         }
 
         Invoke("createEnemyOnTime", Random.Range(5, 15));
@@ -149,5 +165,26 @@ public class GameManager : MonoBehaviour
 
         return closest;
     }
+
+    public void setPowerUp(PowerUps PU)
+    {
+        switch (PU)
+        {
+            case PowerUps.BACKPACK:
+            
+                increaseMaxNumberWood(6);
+                BackPack.SetActive(true);
+                break;
+
+            case PowerUps.SHIELD:
+                ShieldEnabled = true;
+                Shield.SetActive(true);
+                break;
+        }
+
+        UpdateCanvas();
+    }
+
+
 
 }

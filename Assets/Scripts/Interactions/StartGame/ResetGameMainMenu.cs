@@ -12,7 +12,7 @@ public class ResetGameMainMenu : MonoBehaviour, InteractionInterface
         {
             FindObjectOfType<GeneralAnimationManager>().FadeIn();
             PlayerManager.Instance.readyToPlay_ = true;
-            FindObjectOfType<PlayerMovement>().EnablePlayerMovement(false);
+            FindObjectOfType<PlayerMovement>().DisablePlayerMovement();
             Invoke("restartScene", 5);
         }
     }
@@ -21,7 +21,7 @@ public class ResetGameMainMenu : MonoBehaviour, InteractionInterface
     {
         FindObjectOfType<MainMenuManager>().SetDay();
         FindObjectOfType<GeneralAnimationManager>().FadeOut();
-        FindObjectOfType<PlayerMovement>().EnablePlayerMovement(true);
+        FindObjectOfType<PlayerMovement>().EnablePlayerMovement();
     }
 
     public Sprite getIcon()

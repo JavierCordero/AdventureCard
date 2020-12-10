@@ -1,66 +1,134 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private float startSpeed;
+    private float currentSpeed;
+    [Range(0f, 1f)] [SerializeField] private float buildUpSpeed;
 
-    //Speeds
-    [HideInInspector]
-    public float startSpeed;
+    private Vector2 movementInput;
+    private Vector2 newMovementInput;
+    private Vector3 forward;
 
-    [HideInInspector]
-    public float currentSpeed;
+    public Vector2 deadZone = new Vector2(0.02f, 0.02f);
 
-    [Range(0f, 1f)]
-    [SerializeField]
-    public float buildUpSpeed;
+    private Rigidbody rb;
 
-    public float rotationSpeed = 1.2f;
-    public float playerRotationSpeed = 0.1f;
-    public float speedMultiplier = 2.5f;
-    public float jumpForce = 10.0f;
-
-
-    public float rollWalkCooldown = 0.8f;
-    public float rollRunCooldown = 1.1f;
-
-    public GameObject playerRepresentation;
-    public GameObject playerFeet;
-
-    [HideInInspector]
-    public Rigidbody rb;
-
-    [HideInInspector]
     public PlayerInputHandler playerInput;
 
+    public float rotationSpeed = 1.2f;
+
     public Animator playerAnimator;
+    private Vector3 heading;
+    public GameObject playerRepresentation;
+    public float playerRotationSpeed = 0.1f;
+    public float speedMultiplier = 2.5f;
+
+    public GameObject playerFeet;
+
+    public float jumpCooldown = 1.5f;
+
+    public float GravityMultiplier = 100;
+
+    private bool playerCanMove_ = true;
+
+    private bool playerRolling_ = false;
+
+    private Vector2 playerRollDirection;
+
+    public bool CanRoll = true;
+
+    [SerializeField]
+    private float rollCooldown = 2;
 
     [SerializeField]
     private PlayerAnimationController animationController;
-    public PlayerAnimationController GetPlayerAnimationController() => animationController;
-
-    [HideInInspector]
-    public bool playerCanMove = true;
-
     void Awake()
     {
+        forward = Camera.main.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+
         currentSpeed = startSpeed;
     }
-
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInputHandler>();
-        FindObjectOfType<GeneralAnimationManager>().FadeOut();
-
     }
 
-    public void EnablePlayerMovement(bool value)
+    void FixedUpdate()
     {
-        playerCanMove = value;
+        if (playerCanMove_)
+        {
+            newMovementInput = playerInput.movementInput;
+
+            if (playerRolling_)
+            {
+                newMovementInput = playerRollDirection;
+                currentSpeed = startSpeed * speedMultiplier;
+            }
+
+            if (playerInput.movementInput == Vector2.zero)
+            {
+                SetIdlePlayer();
+            }
+
+            else
+            {
+
+                float realBuildUpSpeed = 1f - Mathf.Pow(1f - buildUpSpeed, Time.deltaTime * 60);
+                movementInput = Vector2.Lerp(movementInput, newMovementInput, realBuildUpSpeed);
+
+
+                animationController.EnableWalk();
+
+                if (playerInput.run)
+                {
+                    currentSpeed = startSpeed * speedMultiplier;
+                    animationController.EnableRun();
+                }
+
+                heading = (Vector3.Normalize(Camera.main.transform.forward) * newMovementInput.y +
+                   Vector3.Normalize(Camera.main.transform.right) * newMovementInput.x);
+
+                heading.y = 0.0f;
+
+                transform.forward = transform.forward;//Vector3.Slerp(transform.forward, heading, rotationSpeed * Time.deltaTime);
+
+                rb.velocity = heading * currentSpeed;
+
+                playerRepresentation.transform.rotation = Quaternion.Lerp(playerRepresentation.transform.rotation, Quaternion.LookRotation(heading, Vector3.up), playerRotationSpeed);
+
+                currentSpeed = startSpeed;
+            }
+
+
+        }
+
+        else
+        {
+            SetIdlePlayer();
+        }
     }
 
+    private void SetIdlePlayer()
+    {
+        rb.velocity = Vector3.zero;
+
+        animationController.EnableIdle();
+    }
+
+    public void DisablePlayerMovement()
+    {
+        playerCanMove_ = false;
+    }
+
+    public void EnablePlayerMovement()
+    {
+        playerCanMove_ = true;
+    }
 }

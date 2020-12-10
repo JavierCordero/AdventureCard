@@ -92,14 +92,14 @@ public class PlayerAnimationController : MonoBehaviour
     public void EnableBlock()
     {   
         anim.SetTrigger("Block");
-        player.playerCanMove = false;
+        player.DisablePlayerMovement();
     }
 
     public void EnableAtack(float index)
     {
         if (!sword.activeSelf)
         {
-            player.playerCanMove = false;
+            player.DisablePlayerMovement();
             anim.SetFloat("Atack", index);
             anim.SetTrigger("AttackTrigger");
             sword.SetActive(true);
@@ -113,18 +113,13 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void AtackFinished()
     {
-        player.playerCanMove = true;
+        player.EnablePlayerMovement();
         sword.SetActive(false);
     }
     public void BlockFinished()
     {
-        player.playerCanMove = true;
-        //anim.SetBool("Block", false);
+        player.EnablePlayerMovement();
         player.playerInput.block = false;
-        //if (lastMove == "Walk")
-        //    EnableWalk();
-        //else if (lastMove == "Run")
-        //    EnableRun();
     }
 
 }
